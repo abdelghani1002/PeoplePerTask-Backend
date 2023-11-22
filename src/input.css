@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Categories */
+.transition-left {
+    transition: left 1s;
+}
+
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+.categories-section .category-card:hover {
+    border-bottom: 2px solid gray;
+}
+html {
+	overflow-y: scroll;
+}
+
+body {
+	font-family: 'Titillium Web', sans-serif;
+}
+
+.form {
+	background: #18202B;
+	padding: 40px;
+	max-width: 600px;
+	margin: 40px auto;
+	border-radius: 4px;
+	box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+}
+
+.categories-section .category-card:hover a h3, .freelancers-section .freelancer-card:hover .title, .offers-section .offer-card:hover .title {
+    text-decoration: underline;
+}
+
+.categories-section .category-card div {
+    background-image: linear-gradient(to bottom, rgba(78, 78, 78, 0.446), rgba(243, 243, 243, 0), rgba(172, 172, 172, 0));
+}
+
+.scroll-left:disabled svg path , .scroll-right:disabled svg path{
+    fill: rgb(208, 206, 206);
+}
+
+.freelancer-card:hover, .offer-card:hover{
+    transform: translateY(-2px);
+}
+
+.companies-section img{
+    mix-blend-mode: color-burn;
+}
+
+footer{
+    background-color: #18202B;
+}
+
+/* Dark mode */
+.dark .specialities a{
+    background-color: rgb(83, 91, 91);
+}
+
+.dark .companies-section svg :last-child{
+    fill: white;
+}
+
+.lightmodeBtn{
+    display: none;
+}
+
+.dark .lightmodeBtn {
+    display: block;
+}
+
+.lightmodeBtn:hover path{
+    fill: white;
+    transform: scale(1.05);
+}
+
+.darkmodeBtn:hover path{
+    fill: black;
+    transform: scale(1.05);
+}
+.tab-group {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 40px 0;
+
+}
+
+.tab-group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.tab-group li a {
+	display: block;
+	text-decoration: none;
+	padding: 15px;
+	background: rgb(255, 255, 255);
+	color: #000000;
+	font-size: 20px;
+	float: left;
+	width: 50%;
+	text-align: center;
+	cursor: pointer;
+	transition: .5s ease;
+}
+
+.tab-group .active a {
+	background: #00FF0A;
+	color: #ffffff;
+} 
+
+.tab-content>div:last-child {
+	display: none;
+}
+
+label {
+	position: absolute;
+	transform: translateY(6px);
+	left: 13px;
+	color: rgba(0, 0, 0, 0.5);
+	transition: all 0.25s ease;
+	-webkit-backface-visibility: hidden;
+	pointer-events: none;
+	font-size: 14px;
+}
+
+label.active {
+	transform: translateY(-25px);
+	left: 2px;
+	font-size: 14px;
+	color: #00FF0A;
+}
+
+label.highlight {
+	color: #ffffff;
+}
+
+input:focus,
+textarea:focus {
+	outline: 0;
+	border-color: #00FF0A;
+}
+
+textarea {
+	border: 2px solid #a0b3b0;
+	resize: vertical;
+}
+
+.forgot {
+	margin-top: -20px;
+	text-align: right;
+}
