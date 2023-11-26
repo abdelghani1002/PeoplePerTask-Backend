@@ -2,11 +2,12 @@
 <html>
 
 <head>
-    <title>dashboard</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../dist/output.css" rel="stylesheet">
-    <link rel="stylesheet" href="input.css">
+    <link rel="stylesheet" href="../dist/output.css">
+    <link rel="stylesheet" href="./input.css">
+    <link rel="icon" type="image/x-icon" href="../images/moroccoFlag.png" />
+    <title>dashboard</title>
 </head>
 
 <body class="overflow-x-hidden ">
@@ -15,7 +16,8 @@
         <span class="text-lg self-center ">Abdelghani Ait</span>
     </header>
 
-    <div class="flex flex-row justify-start">
+    <!-- Container -->
+    <div class="flex flex-row justify-start"> 
         <div class="lg:w-72 sm:h-full h-screen">
             <span id="btn_sidebar" class=" cursor-pointer rounded-full shadow-md absolute lg:hidden top-3/4 -left-2">
                 <svg width="33" height="33" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +29,7 @@
 
             </span>
             <!-- side bar -->
-            <div id="sidebar" class=" z-50 fixed top-0 left-0  w-72 sm:h-full h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
+            <div id="sidebar" class="z-50 fixed top-0 left-0  w-72 sm:h-full h-screen transition-transform -translate-x-full lg:translate-x-0" aria-label="Sidebar">
                 <div class=" h-full px-3 py-4 overflow-y-auto bg-custom-green dark:bg-gray-800">
                     <span id="close_btn_side_bar" class="rounded-full shadow-md lg:hidden fixed top-3/4 left-56 cursor-pointer">
                         <svg width="29" height="28" viewBox="0 0 29 28 " fill="none" xmlns="http://www.w3.org/2000/svg">

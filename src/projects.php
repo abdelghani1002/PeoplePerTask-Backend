@@ -11,9 +11,6 @@ ob_start();
         <div class="shadow-lg text-center w-2/5 bg-gray-50 flex flex-col gap-2 py-3">
             <h4 class="  text-xl font-semibold bg-gray-50"> Product Sold</h4>
             <p class="font-bold text-4xl">13.8k</p>
-            <span class="text-custom-green">
-                +7%
-            </span>
         </div>
         <div class="shadow-lg text-center w-2/5 bg-gray-50 flex flex-col gap-2 py-3">
             <h4 class="  text-xl font-semibold bg-gray-50"> Total Profit</h4>
