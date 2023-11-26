@@ -1,7 +1,16 @@
 <?php
+session_start();
 require_once("./dashboard-layout.php");
 require_once("../DataBase/connection.php");
 
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $message_type = $_SESSION['message_type'];
+    unset($_SESSION['message']);
+    unset($_SESSION['message_type']);
+}
+$success_class = "text-red-800 bg-red-50";
+$error_class = "text-green-800 bg-green-50";
 
 // Number of freelancers
 $sql_query = "select count(*) as count from users where isFreelancer = 1;";
@@ -63,7 +72,16 @@ $revenue = $row['revenue'];
             <h3 class="my-3 mr-auto text-2xl font-bold text-cyan-800">List of Freelancers</h3>
             <a class="cursor-pointer text-white font-bold bg-custom-green rounded-xl p-2 h-10 hover:bg-custom-green+" href="./freelancer/createForm.php">+ Add freelancer</a>
         </div>
-        <div class="flex">
+        <div class="flex flex-col">
+
+            <!-- Alert request message  -->
+            <?php if (isset($message)) : ?>
+                <div class="p-4 mb-4 text-sm text-center rounded-lg <?php $message_type == 'success' ? $success_class : $error_class ?>" role="alert">
+                    <span class="font-medium"><?= $message ?></span>
+                </div>
+            <?php endif; ?>
+
+            <!-- Table -->
             <table class="table-auto w-full text-center whitespace-no-wrap border-spacing-2">
                 <thead>
                     <tr class="bg-gray-400">
@@ -115,7 +133,8 @@ $revenue = $row['revenue'];
                                     </form>
                                 </td>
                                 <td class="text-left">
-                                    <form class="pl-1" action="edit.php?id=<?= $id ?>" method="get">
+                                    <form class="pl-1" action="./freelancer/editForm.php" method="post">
+                                        <input class="hidden" type="text" name="id" id="id" value="<?= $id ?>">
                                         <button type="submit" class="hover:bg-custom-green hover:text-white text-custom-green++ border border-custom-green rounded-md p-2">
                                             Update
                                         </button>
