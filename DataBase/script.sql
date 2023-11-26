@@ -117,12 +117,12 @@ create table projects (
     FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) on delete set null on update CASCADE
 );
 
-INSERT into projects(`title`, `description`, `price`, `skills_required`,  `duration`, `status`, ,`hired_freelancer_id` `user_id`, `subcategory_id`) values
-("project1", "project1 description", 230, "skill3, skill6", "96:00:00", "completed", 4, 1, 3),
+INSERT into projects(`title`, `description`, `price`, `skills_required`,  `duration`, `status`,`hired_freelancer_id`, `user_id`, `subcategory_id`) values
+("project1", "project1 description", 230, "skill3, skill6", "96:00:00", "incompleted", 4, 1, 3),
 ("project1", "project1 description", 30, "skill3, skill6", "24:00:00", "completed", 1, 3, 2),
-("project1", "project1 description", 330, "skill3, skill6", "72:00:00", "completed", 3, 2, 5),
+("project1", "project1 description", 330, "skill3, skill6", "72:00:00", "incompleted", 3, 2, 5),
 ("project1", "project1 description", 70, "skill3, skill6", "24:00:00", "completed", 2, 5, 1),
-("project1", "project1 description", 90, "skill3, skill6", "48:00:00", "completed", 3, 3, 4);
+("project1", "project1 description", 90, "skill3, skill6", "48:00:00", "incompleted", 3, 3, 4);
 
 
 insert into subcategories(`name`, `category_id`) VALUES

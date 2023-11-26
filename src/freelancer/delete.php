@@ -3,7 +3,7 @@ require '../../DataBase/connection.php';
 
 if (isset($_POST['id'])){
     $id = $_POST['id'];
-    $sql = "DELETE FROM freelancers
+    $sql = "DELETE FROM users
             WHERE id = $id;";
     $res = mysqli_query($conn, $sql);
     if ($res)
