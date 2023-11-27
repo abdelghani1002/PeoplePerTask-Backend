@@ -7,6 +7,6 @@ if (isset($_POST['id'])){
             WHERE id = $id;";
     $res = mysqli_query($conn, $sql);
     if ($res)
-        header("location:../statistics.php");
-    mysqli_close($conn);
+        header("location:../freelancers.php");
 }
+mysqli_close($conn);

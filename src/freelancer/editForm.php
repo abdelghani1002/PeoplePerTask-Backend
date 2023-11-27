@@ -33,17 +33,15 @@ if (isset($_POST)) {
 
 <body class="bg-gray-100 h-100 flex flex-col">
     <div class="absolute p-5">
-        <a href="../statistics.php" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
+        <a href="../freelancers.php" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
             <- Back </a>
     </div>
 
-    <div class="w-1/3 m-auto h-100">
+    <div class="w-1/3 m-auto h-100 pt-10">
         <form class="flex flex-col flex-grow w-100" action="./update.php" method="POST">
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="name" id="name" value="<?= $old_name ?>">
 
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="email" name="email" id="email" value="<?= $old_email ?>">
-
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="password" name="password" id="password">
 
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="job" id="job" value="<?= $old_job ?>">
 
@@ -83,10 +81,15 @@ if (isset($_POST)) {
                 ?>
 
             </select>
+
             <input class="hidden" type="number" name="id" id="id" value="<?= $id ?>">
+
             <input class="py-2 px-1 mt-3 w-100 bg-green-500 hover:bg-green-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Edit Freelancer">
         </form>
     </div>
+    <?php
+    mysqli_close($conn);
+    ?>
 </body>
 
 </html>

@@ -16,16 +16,17 @@ if (isset($_POST)) {
         if (mysqli_stmt_execute($stmt)) {
             $_SESSION['message'] = "Freelancer has been created Successfully";
             $_SESSION['message_type'] = "success";
-            header("location:./createForm.php", 201);
+            header("location:../freelancers.php", 201);
         }else{
             $_SESSION['message'] = "Error in execute !";
             $_SESSION['message_type'] = "error";
-            header("location:./createForm.php", 500);
+            header("location:../freelancers.php", 500);
         }
         mysqli_stmt_close($stmt);
     }else{
         $_SESSION['message'] = "Error : all fields are required !";
         $_SESSION['message_type'] = "error";
-        header('location:./createForm.php', 400);
-    }
+        header('location:../freelancers.php', 400);
+    }    
 }
+mysqli_close($conn);

@@ -26,7 +26,7 @@ $error_class = "text-green-800 bg-green-50";
 
 <body class="bg-gray-100 h-100 flex flex-col">
     <div class="absolute p-5">
-        <a href="../statistics.php" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
+        <a href="../freelancers.php" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
             <- Back </a>
     </div>
 
@@ -79,7 +79,8 @@ $error_class = "text-green-800 bg-green-50";
             <div class="p-4 mb-4 text-sm text-center rounded-lg <?php $message_type == 'success' ? $success_class : $error_class ?>" role="alert">
                 <span class="font-medium"><?= $message ?></span>
             </div>
-        <?php endif; ?>
+        <?php endif;
+        mysqli_close($conn); ?>
     </div>
 </body>
 
