@@ -1,3 +1,20 @@
+<?php 
+session_start();
+
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $message_type = $_SESSION['message_type'];
+    unset($_SESSION['message']);
+    unset($_SESSION['message_type']);
+}
+$success_class = "text-red-800 bg-red-50";
+$error_class = "text-green-800 bg-green-50";
+
+
+?>
+
+
+
 <!doctype html>
 <html>
 
@@ -59,7 +76,7 @@
                     <ul class="h-5/6 flex flex-col gap-1 mt-2 space-y-2 font-medium">
                         <!-- Search -->
                         <li>
-                            <span href="/" class="flex justify-between items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <span href="/" class="search flex justify-between items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
 
                                 <span class="ml-3">Search</span>
@@ -71,7 +88,7 @@
 
                         <!-- Statistics -->
                         <li>
-                            <a href="./statistics.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="./statistics.php" class="statistics flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
                                 <span class="flex-1 ml-3 whitespace-nowrap">Statistics</span>
                                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
@@ -82,7 +99,7 @@
 
                         <!-- Inbox -->
                         <li>
-                            <a href="./inbox.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="./inbox.php" class="inbox flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
                                 <span class="flex-1 ml-3 whitespace-nowrap">Inbox</span>
                                 <span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-custom-green bg-red-500 rounded-full mx-3">3</span>
@@ -94,7 +111,7 @@
 
                         <!-- Projects -->
                         <li>
-                            <a href="./projects.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="./projects.php" class="projects flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <span class="flex-1 ml-3 whitespace-nowrap">Projects</span>
                                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -109,7 +126,7 @@
 
                         <!-- Freelancers -->
                         <li>
-                            <a href="./freelancers.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="./freelancers.php" class="freelancers flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
                                 <span class="flex-1 ml-3 whitespace-nowrap">Freelancers</span>
                                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
@@ -120,7 +137,7 @@
 
                         <!-- Categories -->
                         <li>
-                            <a href="./CategoryManagement.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="./CategoryManagement.php" class="categories flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <span class="flex-1 ml-3 whitespace-nowrap">Categories</span>
                                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                                     <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
@@ -131,7 +148,7 @@
 
                         <!-- Testimonials -->
                         <li>
-                            <a href="./Testimonials.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="./Testimonials.php" class="testimonials flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <span class="flex-1 ml-3 whitespace-nowrap">Testimonials</span>
                                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="80" height="54" viewBox="0 0 96 61" fill="none">
                                     <path d="M81.5191 61C84.4085 44.3599 89.0688 24.0266 95.5 0H71.7325C60.0818 22.4032 51.7865 41.8436 46.8466 58.3214L48.9437 61H81.5191ZM34.7531 61C38.2018 41.1131 42.9086 20.7798 48.8738 0H25.1063C20.0732 9.25349 15.1799 19.6028 10.4264 31.0479C5.67293 42.493 2.36412 51.5842 0.5 58.3214L2.1777 61H34.7531Z" fill="currentColor" />
@@ -141,8 +158,8 @@
                         </li>
 
                         <!-- Log out -->
-                        <li class="bg-white  rounded-lg  ">
-                            <a href="sign_in.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <li class="logout bg-white hover:bg-slate-500 rounded-lg">
+                            <a href="sign_in.html" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white dark:hover:bg-gray-700 group">
                                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
                                 </svg>
