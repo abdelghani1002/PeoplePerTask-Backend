@@ -22,7 +22,7 @@ $error_class = "text-green-800 bg-green-50";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../../dist/output.css">
-    <title>Create</title>
+    <title>Category-Create</title>
 </head>
 
 <body class="bg-gray-100 h-100 flex flex-col">
@@ -36,7 +36,7 @@ $error_class = "text-green-800 bg-green-50";
 
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="name" id="name" placeholder="Name">
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="file" name="photo" id="photo" placeholder="Upload photo">
+            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="file" name="photo" id="photo">
 
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="slogan" id="slogan" placeholder="Slogan">
 

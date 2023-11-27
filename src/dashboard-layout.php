@@ -10,7 +10,6 @@ if (isset($_SESSION['message'])) {
 $success_class = "text-red-800 bg-red-50";
 $error_class = "text-green-800 bg-green-50";
 
-
 ?>
 
 
@@ -24,7 +23,7 @@ $error_class = "text-green-800 bg-green-50";
     <link rel="stylesheet" href="../dist/output.css">
     <link rel="stylesheet" href="./input.css">
     <link rel="icon" type="image/x-icon" href="../images/moroccoFlag.png" />
-    <title>dashboard</title>
+    <title>PeoplePerTask-Dashboard</title>
 </head>
 
 <body class="overflow-x-hidden ">

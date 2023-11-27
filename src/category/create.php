@@ -15,7 +15,7 @@ if (isset($_POST)) {
     $slogan = $_POST['slogan'];
 
 
-    if (!empty($name) && !empty($slogan) && !empty($_FILES['photo'])) {
+    if (!empty($name) && !empty($_FILES['photo'])) {
         // Photo Validation
         if ($_FILES['photo']['error'] === 0) {
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
