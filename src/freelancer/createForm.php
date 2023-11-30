@@ -72,7 +72,7 @@ $error_class = "text-green-800 bg-green-50";
 
             </select>
 
-            <input class="py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Add Freelancer">
+            <input class="text-white py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Add Freelancer">
         </form>
         <!-- Alert request message  -->
         <?php if (isset($message)) : ?>

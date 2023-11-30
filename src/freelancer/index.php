@@ -25,12 +25,12 @@ require_once("../DataBase/connection.php");
             <table class="table-auto w-full whitespace-no-wrap border-spacing-2">
                 <thead>
                     <tr class="bg-gray-400 text-center">
-                        <th class="py-3 border-r border-gray-200">ID</th>
-                        <th class="py-3 border-r border-gray-200">Name</th>
-                        <th class="py-3 border-r border-gray-200">Email</th>
-                        <th class="py-3 border-r border-gray-200">Job</th>
-                        <th class="py-3 border-r border-gray-200">City</th>
-                        <th class="py-3" colspan="2">
+                        <th class="py-2 border-r border-gray-200">ID</th>
+                        <th class="py-2 border-r border-gray-200">Name</th>
+                        <th class="py-2 border-r border-gray-200">Email</th>
+                        <th class="py-2 border-r border-gray-200">Job</th>
+                        <th class="py-2 border-r border-gray-200">City</th>
+                        <th class="py-2" colspan="2">
                             Manage
                         </th>
                     </tr>

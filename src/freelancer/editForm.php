@@ -84,7 +84,7 @@ if (isset($_POST)) {
 
             <input class="hidden" type="number" name="id" id="id" value="<?= $id ?>">
 
-            <input class="py-2 px-1 mt-3 w-100 bg-green-500 hover:bg-green-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Edit Freelancer">
+            <input class="text-white py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Edit Freelancer">
         </form>
     </div>
     <?php

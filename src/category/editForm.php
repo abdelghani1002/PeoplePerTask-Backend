@@ -47,7 +47,7 @@ if (isset($_POST) && !empty($_POST['id'])) {
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="slogan" id="slogan" placeholder="Slogan" value="<?= $category['slogan'] ?>">
             
             <input class="hidden" type="number" name="id" id="id" value="<?= $id ?>">
-            <input class="py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Edit Category">
+            <input class="text-white py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Edit Category">
         </form>
 
         <!-- Alert request message  -->

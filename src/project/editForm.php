@@ -8,9 +8,13 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
     unset($_SESSION['message_type']);
 }
-
 $success_class = "text-red-800 bg-red-50";
 $error_class = "text-green-800 bg-green-50";
+
+if (isset($_POST) && !empty($_POST['id'])) {
+    $id = $_POST['id'];
+    $category = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * from subcategories where id = $id;"));
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +26,7 @@ $error_class = "text-green-800 bg-green-50";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../../dist/output.css">
-    <title>Category-Create</title>
+    <title>Category-Update</title>
 </head>
 
 <body class="bg-gray-100 h-100 flex flex-col">
@@ -32,15 +36,18 @@ $error_class = "text-green-800 bg-green-50";
     </div>
 
     <div class="w-1/3 m-auto h-100 mt-10">
-        <form class="flex flex-col flex-grow w-100" action="./create.php" method="POST" enctype="multipart/form-data">
+        <form class="border flex flex-col flex-grow w-100" action="./update.php" method="POST" enctype="multipart/form-data">
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="name" id="name" placeholder="Name">
+            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="name" id="name" placeholder="Name" value="<?= $category['name'] ?>">
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="file" name="photo" id="photo">
+            <img class="w-1/3 self-center" src="<?= "../" . $category['photo_src'] ?>" alt="category Photo">
+            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md cursor-pointer" type="file" name="photo" id="photo">
+            <p class="mx-3 text-xs text-gray-500 " id="file_input_help">JPEG, PNG, JPG, WEBP (MAX. 5Mo)</p>
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="slogan" id="slogan" placeholder="Slogan">
-
-            <input class="text-white py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Add Category">
+            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="slogan" id="slogan" placeholder="Slogan" value="<?= $category['slogan'] ?>">
+            
+            <input class="hidden" type="number" name="id" id="id" value="<?= $id ?>">
+            <input class="py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Edit Category">
         </form>
 
         <!-- Alert request message  -->

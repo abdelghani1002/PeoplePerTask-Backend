@@ -9,7 +9,7 @@ $row = mysqli_fetch_assoc($result);
 $freelancers_count = $row["count"];
 
 // Number of incompleted projects
-$sql_query = "select count(*) as count from projects where status = 'incompleted';";
+$sql_query = "select count(*) as count from projects where status = 'uncompleted';";
 $result = mysqli_query($conn, $sql_query);
 $row = mysqli_fetch_assoc($result);
 $incompleted_projects_count = $row["count"];
@@ -20,12 +20,10 @@ $result = mysqli_query($conn, $sql_query);
 $row = mysqli_fetch_assoc($result);
 $revenue = $row['revenue'];
 
-// 
-
 ?>
 
 <!-- main -->
-<div class="flex-grow flex flex-col pb-10">
+<div class="flex-grow flex flex-col pb-10 w-4/5 px-2">
     <!-- Statistique section -->
     <section class="flex flex-col">
         <h1 class="text-4xl text-center font-bold">DashBoard</h1>
@@ -34,13 +32,13 @@ $revenue = $row['revenue'];
                 <p class="font-bold text-4xl">
                     <?= $freelancers_count ?>
                 </p>
-                <h4 class="  text-xl font-semibold ">Freelancers </h4>
+                <h4 class="text-xl font-semibold ">Freelancers</h4>
             </div>
             <div class="shadow-lg text-center w-2/5 bg-gray-300  flex flex-col gap-2 p-3">
                 <p class="font-bold text-4xl">
                     <?= $incompleted_projects_count ?>
                 </p>
-                <h4 class="  text-xl font-semibold ">Incompleted projects</h4>
+                <h4 class="  text-xl font-semibold ">Uncompleted projects</h4>
             </div>
             <div class="shadow-lg text-center w-2/5 bg-gray-300  flex flex-col gap-2 p-3">
                 <p class="font-bold text-4xl"><?= $revenue ?> <small>$</small> </p>
@@ -70,8 +68,6 @@ mysqli_close($conn);
         var confirmation = confirm(`Are you sure you want to delete it!`);
         return confirmation;
     }
-
-    document.querySelector('.statistics').classList.add("active");
 </script>
 <script src="../javascript/jquery.js"></script>
 <script src="../javascript/dashboard.js"></script>

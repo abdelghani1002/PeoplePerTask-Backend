@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.active{
-	background-color: rgb(2, 82, 17)272;
-}
-
 /* Categories */
 .transition-left {
     transition: left 1s;
