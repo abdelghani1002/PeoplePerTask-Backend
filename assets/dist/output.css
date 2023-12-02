@@ -3622,7 +3622,6 @@ footer{
 .tab-group {
   list-style: none;
   padding: 0;
-  margin: 0 0 40px 0;
 }
 
 .tab-group:after {
@@ -3648,10 +3647,6 @@ footer{
 .tab-group .active a {
   background: #00FF0A;
   color: #ffffff;
-}
-
-.tab-content>div:last-child {
-  display: none;
 }
 
 label {

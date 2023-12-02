@@ -87,8 +87,6 @@ footer{
 .tab-group {
 	list-style: none;
 	padding: 0;
-	margin: 0 0 40px 0;
-
 }
 
 .tab-group:after {
@@ -117,7 +115,7 @@ footer{
 } 
 
 .tab-content>div:last-child {
-	display: none;
+	/* display: none; */
 }
 
 label {

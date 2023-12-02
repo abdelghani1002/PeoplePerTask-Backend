@@ -1,4 +1,3 @@
-import Swiper from 'swiper';
 // Sections navbar
 $("#sectionsNavbar button").click(() => {
     $("#sectionsNavbar").toggleClass("-translate-x-full");

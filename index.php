@@ -1,20 +1,18 @@
 <?php
 require "./src/home_functions.php";
-
-
-
 $index_nav = "./";
 $path = "./src/";
 ?>
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">P
+<html lang="en" class="scroll-smooth">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./assets/dist/output.css">
   <link rel="stylesheet" href="./assets/dist/swiper-bundle.min.css">
+  <link rel="favicon" href="./favicon.ico">
   <title>Home</title>
 </head>
 

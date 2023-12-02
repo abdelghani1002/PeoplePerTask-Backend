@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+}
+?>
+
 <!-- Header -->
 <header class="flex bg-gray-50 justify-between p-2 md:py-3 md:px-8 lg:px-10 dark:bg-slate-800">
     <div class="flex">
@@ -40,18 +47,44 @@
             </li>
         </ul>
 
-        <div class=" lg:w-auto  w-3/4 flex flex-col lg:flex-row  justify-center gap-4 self-center  text-1xl ">
-            <a href="<?= $path . 'sign_in.php#login' ?>" class="text-custom-green text-center border-solid border-2 border-custom-green rounded-md  px-3">
-                <span>
-                    Log in
-                </span>
-            </a>
-            <a href="<?= $path . 'sign_in.php#signup' ?>" class="bg-custom-green rounded-md px-3 text-center text-white font-semibold flex items-center">
-                <span>
-                    Register
-                </span>
-            </a>
-        </div>
+        <?php
+        if (!isset($user)) {
+        ?>
+            <div class=" lg:w-auto  w-3/4 flex flex-col lg:flex-row  justify-center gap-4 self-center text-1xl">
+                <a href="<?= $path . 'authForm.php?form=login' ?>" class="text-custom-green text-center border-solid border-2 border-custom-green rounded-md  px-3">
+                    <span>
+                        Log in
+                    </span>
+                </a>
+                <a href="<?= $path . 'authForm.php?form=sign_up' ?>" class="bg-custom-green rounded-md px-3 text-center text-white font-semibold flex items-center">
+                    <span>
+                        Register
+                    </span>
+                </a>
+            </div>
+        <?php
+        } else {
+        ?>
+            <div class="lg:w-auto  w-3/4 flex flex-col lg:flex-row  justify-center gap-4 self-center  text-1xl ">
+                <a href="<?= $path . 'auth.php?func=logout' ?>" class=" text-center flex flex-row items-center self-center border-solid border-2 border-gray-300 rounded-md px-2 h-fit">
+                    <span class="text-gray-300">
+                        Log out
+                    </span>
+                </a>
+
+                <!-- Href to user profil -->
+                <a href="" class="bg-gray p-[5] flex items-center">
+                    <span class="text-gray-300">
+                        <?= $user['fullName'] ?>
+                    </span>
+                    <img src="<?= "./" . $user['photo_src'] ?>" class=" ml-2 w-10 h-10 rounded-full cover">
+                    </img>
+                </a>
+            </div>
+            </div>
+        <?php
+        }
+        ?>
     </nav>
 
     <!-- Theme buttons -->
