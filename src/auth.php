@@ -1,6 +1,6 @@
 <?php
-require '../includes/connection.php';
 session_start();
+require '../includes/connection.php';
 
 function sign_up()
 {
@@ -40,11 +40,11 @@ function sign_up()
     }
 
     // Validate password length (you can adjust the length based on your requirements)
-    if (strlen($password) < 8) {
-        $_SESSION['message'] = "Password must be at least 8 characters long.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
-        return;
-    }
+    // if (strlen($password) < 8) {
+    //     $_SESSION['message'] = "Password must be at least 8 characters long.";
+    //     header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
+    //     return;
+    // }
 
     // Check if password and confirm password match
     if ($password !== $confirmpassword) {
@@ -122,7 +122,17 @@ function login()
 
     $res_user = mysqli_query($conn, "SELECT * FROM users WHERE email='$input_email'");
     $_SESSION['user'] = mysqli_fetch_assoc($res_user);
-    header('location:' . $_ENV['PROJECT_DIR'] . '/index.php');
+    switch ($_SESSION['user']['role']){
+        case "freelancer" :
+            header('location:' . $_ENV['PROJECT_DIR'] . '/src/freelancer/profile.php');
+            break;
+        case "admin" :
+            header('location:' . $_ENV['PROJECT_DIR'] . '/dashboard.php');
+            break;
+        default:
+            header('location:' . $_ENV['PROJECT_DIR'] . '/index.php');
+            break;
+    }
     return;
 }
 

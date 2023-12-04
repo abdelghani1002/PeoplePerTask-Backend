@@ -572,8 +572,6 @@ let offersInfos = [
     },
 ]
 
-
-
 $(document).ready(() => {
     // Categories section
 

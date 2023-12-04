@@ -1,7 +1,8 @@
 <?php
+session_start();
+include './includes/connection.php';
 require "./src/home_functions.php";
-$index_nav = "./";
-$path = "./src/";
+$path = ".";
 ?>
 
 <!doctype html>
@@ -12,7 +13,7 @@ $path = "./src/";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./assets/dist/output.css">
   <link rel="stylesheet" href="./assets/dist/swiper-bundle.min.css">
-  <link rel="favicon" href="./favicon.ico">
+  <link rel="favicon" href="./assets/images/favicon.png">
   <title>Home</title>
 </head>
 
@@ -143,7 +144,7 @@ $path = "./src/";
       </div>
       <div class="relative md:w-5/12 lg:max-w-lg lg:w-full w-5/6 lg:-mt-14 place-self-center">
         <ul>
-          <li id="slide1" class="slide hidden active-slide">
+          <li id="slide1" class="slide active-slide">
             <div class="relative">
               <img class="object-cover rounded object-center" alt="hero" src="./assets/images/sliders/slide1/heroNada.png">
 
@@ -320,7 +321,8 @@ $path = "./src/";
               $cat_slogan = $row['slogan'];
           ?>
               <li class="relative bg-no-repeat bg-cover bg-center category-card cursor-pointer w-3/4 md:w-2/5 lg:w-1/6 shrink-0 rounded-lg overflow-hidden">
-                <img class="absolute z-1 w-full h-full object-cover rounded object-center" src="<?= $cat_photo ?>" alt="<?= $cat_name ?>">
+                <img class="absolute z-1 w-full h-full object-cover rounded object-center"
+                src="<?= $path . $cat_photo ?>" alt="<?= $cat_name ?>">
                 <div class="absolute z-2 w-full h-full p-3">
                   <a href="#" class="h-fit">
                     <p class="text-md text-gray-00"><?= $cat_slogan ?></p>

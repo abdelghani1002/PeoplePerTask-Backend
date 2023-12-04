@@ -1,6 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../includes/connection.php';
+function redirect($message, $message_type, $res_code, $back_path = "./createForm.php")
+{
+    $_SESSION['message'] = $message;
+    $_SESSION['message_type'] = $message_type;
+    header('location:' . $back_path , $res_code);
+}
 
 function get_top_categories()
 {

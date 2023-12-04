@@ -1,5 +1,5 @@
 <?php
-require '../../DataBase/connection.php';
+require '../../includes/connection.php';
 session_start();
 
 function redirect($message, $message_type, $res_code)
@@ -8,7 +8,8 @@ function redirect($message, $message_type, $res_code)
     $_SESSION['message'] = $message;
     $_SESSION['message_type'] = $message_type;
     mysqli_close($conn);
-    header('location:../CategoryManagement.php', $res_code);
+    header('location:./index.php', $res_code);
+    exit;
 }
 
 if (isset($_POST) && $_POST['id']) {
@@ -45,14 +46,14 @@ if (isset($_POST) && $_POST['id']) {
 
             $newFileName = uniqid('category_') . '.' . $fileType;
 
-            $uploadFolder = '../images/categories/';
+            $uploadFolder = '/assets/images/categories/';
 
             $new_destination = $uploadFolder . $newFileName;
 
-            if (move_uploaded_file($fileTmpName, "../" . $new_destination)){
+            if (move_uploaded_file($fileTmpName, "../.." . $new_destination)) {
                 unlink("../" . $old_destination);
             }
-            
+
             // Update query with photo
             $sql = "UPDATE subcategories
                     SET
@@ -97,3 +98,5 @@ if (isset($_POST) && $_POST['id']) {
     redirect($message, $message_type, $res_code);
 } else
     echo "nothing posted !";
+
+mysqli_close($conn);
