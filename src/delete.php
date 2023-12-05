@@ -12,7 +12,7 @@ if (!isset($_SESSION['user'])
 }
 
 $entity = $_POST['entity'];
-$table = $entity . "s";
+$entity == "freelancer" || $entity == "client" ? $table = "users" : $table = $entity . "s";
 $id = $_POST['id'];
 
 $sql = "DELETE FROM $table WHERE id = $id";

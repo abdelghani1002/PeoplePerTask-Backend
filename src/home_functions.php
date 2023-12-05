@@ -4,7 +4,7 @@ function redirect($message, $message_type, $res_code, $back_path = "./createForm
 {
     $_SESSION['message'] = $message;
     $_SESSION['message_type'] = $message_type;
-    header('location:' . $back_path , $res_code);
+    header('location:' . $back_path, $res_code);
 }
 
 function get_top_categories()
@@ -34,4 +34,17 @@ function get_top_freelancers()
             ;";
     $res = mysqli_query($conn, $sql);
     return $res;
+}
+
+function get_freelancers_count()
+{
+    global $conn;
+    $sql = "SELECT COUNT(*) as count FROM users WHERE role = 'freelancer'";
+    return mysqli_fetch_assoc(mysqli_query($conn, $sql))['count'];
+}
+
+function get_clients_count(){
+    global $conn;
+    $sql = "SELECT COUNT(*) as count FROM users WHERE role = 'client'";
+    return mysqli_fetch_assoc(mysqli_query($conn, $sql))['count'];
 }

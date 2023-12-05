@@ -16,7 +16,6 @@ if (isset($_SESSION['message'])) {
     $success_class = "text-red-800 bg-red-50";
     $error_class = "text-green-800 bg-green-50";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -92,12 +91,16 @@ if (isset($_SESSION['message'])) {
                                     ,p.`status`
                                     ,u.`fullName` AS poster_name
                                     ,u.`photo_src` as poster_photo_src
+                                    ,u2.`username` as hired_freelancer
+                                    ,u2.`photo_src` as freelancer_photo_src
                                     ,s.`name` as subcategory
                                 FROM projects p
                                 INNER JOIN users u
                                 ON p.user_id = u.id
                                 INNER JOIN subcategories s
                                 ON s.id = p.subcategory_id
+                                INNER JOIN users u2 
+                                ON p.`hired_freelancer_id` = u2.`id`
                                 ;";
                         $res = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($res)) :
@@ -109,10 +112,16 @@ if (isset($_SESSION['message'])) {
                                 $status = $row['status'];
                                 $poster_name = $row['poster_name'];
                                 $poster_photo_src = $row['poster_photo_src'];
+                                $hired_freelancer = $row['hired_freelancer'];
+                                $freelancer_photo_src = $row['freelancer_photo_src'];
                                 $subcategory = $row['subcategory'];
                         ?>
                                 <tr class="odd:bg-gray-200 even:bg-gray-300">
-                                    <td class="p-1 text-center border-r border-white"> <?= $id ?> </td>
+                                    <td class="p-1 text-center border-r border-white">
+                                        <a href="<?= "./view.php?id=" . $id ?>" class="p-1  rounded-full border border-sky-500 text-sky-500 text-xl hover:py-0 hover:text-2xl">
+                                            +
+                                        </a>
+                                    </td>
                                     <td class="p-1 border-r border-white flex flex-row items-center gap-x-2">
                                         <img class="w-7 h-7 rounded-full" src="<?= $path . $poster_photo_src ?>" alt="Poster photo">
                                         <div><?= $poster_name ?></div>
@@ -122,10 +131,61 @@ if (isset($_SESSION['message'])) {
                                     <td class="p-1 border-r border-white"> <?= $duration ?> </td>
                                     <td class="p-1 border-r border-white"> <?= $status ?> </td>
                                     <td class="p-1 border-r border-white"> <?= $subcategory ?> </td>
-                                    <td class="p-1 border-r border-white flex flex-row items-center gap-x-2">
-                                        <img class="w-7 h-7 rounded-full" src="<?= $path . $poster_photo_src ?>" alt="Poster photo">
-                                        <div><?= $poster_name ?></div>
-                                    </td>
+
+                                    <?php if ($hired_freelancer) { ?>
+                                        <td class="p-1 border-r border-white flex flex-row items-center gap-x-2">
+                                            <img class="w-7 h-7 rounded-full" src="<?= $path . $freelancer_photo_src ?>" alt="Freelancer photo">
+                                            <div><?= $hired_freelancer ?></div>
+                                        </td>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <td class="p-1 h-full border-r border-white flex flex-col justify-center">
+                                            <div class="relative w-full h-full mx-auto">
+                                                <!-- Assigned a freelancer -->
+                                                <button class="top-0 assigne-btn p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+                                                    Assigne a freelancer
+                                                </button>
+
+                                                <div class="d-none flex flex-row gap-x-2">
+                                                    <select class="freelancers-select top-9 z-50 left-0 float-left p-2 bg-gray-200 rounded-md" name="freelancer" id="freelancer">
+                                                        <option class="d-none" value="" selected disabled>Select a freelancer</option>
+                                                        <?php
+                                                        $sql2 = "SELECT * from users WHERE `role` = 'freelancer';";
+                                                        $freelancers = mysqli_query($conn, $sql2);
+                                                        if (mysqli_num_rows($freelancers) > 0) {
+                                                            while ($freelancer = mysqli_fetch_assoc($freelancers)) :
+                                                                $freelancer_id = $freelancer['id'];
+                                                                $freelancer_name = $freelancer['username'];
+                                                                $freelancer_photo_src = ['freelancer_photo_src'];
+                                                        ?>
+                                                                <option class="bg-gray-100 <?="bg-[url('". $path . $freelancer_photo_src ."')] cover"?>" value="<?= $freelancer_id ?>">
+                                                                    <?= $freelancer_name ?>
+                                                                </option>
+                                                            <?php
+                                                            endwhile;
+                                                            ?>
+                                                        <?php
+                                                        } else {
+                                                            echo "<p> No freelancer available </p>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                    <form action="./assigne.php" method="POST">
+                                                        <input class="assigned-freelancer" type="hidden" name="freelancer_id">
+                                                        <input type="hidden" name="project_id" value="<?=$id?>">
+                                                        <button class="hover:bg-sky-900 bg-sky-300 text-sky-900 border rounded-md p-2 border-sky-900 hover:text-white">
+                                                            Save
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    <?php
+                                    }
+                                    ?>
+
                                     <td class="text-right border-r border-white">
                                         <form class="text-center" action="../delete.php" method="POST">
                                             <input type="hidden" name="id" id="id" value="<?= $id ?>">
@@ -157,15 +217,33 @@ if (isset($_SESSION['message'])) {
     </main>
 
 
+    <script src="../../assets/javascript/jquery.js"></script>
+    <script src="../../assets/javascript/script.js"></script>
+    <script src="../../assets/javascript/dashboard.js"></script>
     <script>
         function confirmDelete() {
             var confirmation = confirm(`Are you sure you want to delete it!`);
             return confirmation;
         }
+
+        $(document).ready(function() {
+            $(".assigne-btn").click(function() {
+                $(this).next().toggleClass('d-none').click();
+            });
+            
+            $(".freelancers-select").change(function () {
+                // Get the selected freelancer ID from the data attribute
+                const selectedFreelancerId = $(this).val();
+                console.log(selectedFreelancerId);
+    
+                // Set the value of the hidden input field
+                $(".assigned-freelancer").val(selectedFreelancerId);
+            });
+        });
+
+
     </script>
-    <script src="../../assets/javascript/jquery.js"></script>
-    <script src="../../assets/javascript/script.js"></script>
-    <script src="../../assets/javascript/dashboard.js"></script>
+
 </body>
 
 </html>

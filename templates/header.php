@@ -3,9 +3,9 @@
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
     $role_color = "border-blue-800";
-    if($user['role'] == "admin") 
+    if ($user['role'] == "admin")
         $role_color = "border-violet-800";
-    else 
+    else
         $role_color = "border-lime-800";
 }
 
@@ -31,7 +31,7 @@ if (isset($_SESSION['user'])) {
 
     <nav id="navbar" class="z-50 lg:items-center self-center flex flex-col gap-32 lg:flex-row lg:p-0  px-2 pb-8 w-3/6 sm:w-1/3 lg:static absolute lg:bg-transparent bg-gray-50 top-16 right-0  lg:w-9/12  lg:justify-end">
         <?php
-        if (isset($user) && $user['role'] != "admin") {
+        if ((isset($user) && $user['role'] != "admin") || !isset($user)) {
         ?>
             <ul class="flex flex-col lg:flex-row lg:gap-8 gap-5 self-center items-center text-1xl font-bold text-gray-700 lg:w-auto w-5/6">
                 <li class="nav-home text-gray-600 dark:text-gray-300 lg:pt-0 pt-4 dark:border-gray-400">
@@ -46,7 +46,7 @@ if (isset($_SESSION['user'])) {
                     <a href="<?= $path . '/src/contact.php' ?>">Contact Us</a>
                 </li>
 
-                <li class="nav-search text-gray-600 dark:text-gray-300 border-y-2 lg:border-0 lg:pt-0 py-4 lg:pb-0">
+                <li class="nav-search text-gray-600 dark:text-gray-300 border-y-2 lg:border-0 lg:pt-0 pt-4 lg:pb-0">
                     <a href="<?= $path . '/src/search.php' ?> " class="flex">
                         <svg class="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M20 20L15.95 15.95M15.95 15.95C16.6 15.2999 17.1157 14.5282 17.4675 13.6789C17.8193 12.8296 18.0004 11.9193 18.0004 11C18.0004 10.0807 17.8193 9.17039 17.4675 8.32107C17.1157 7.47175 16.6 6.70003 15.95 6.04999C15.3 5.39995 14.5282 4.8843 13.6789 4.5325C12.8296 4.1807 11.9193 3.99963 11 3.99963C10.0807 3.99963 9.17041 4.1807 8.32109 4.5325C7.47176 4.8843 6.70005 5.39995 6.05001 6.04999C4.73718 7.36281 3.99965 9.14338 3.99965 11C3.99965 12.8566 4.73718 14.6372 6.05001 15.95C7.36283 17.2628 9.1434 18.0003 11 18.0003C12.8566 18.0003 14.6372 17.2628 15.95 15.95Z" stroke="#00A607" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -85,11 +85,11 @@ if (isset($_SESSION['user'])) {
                 <?php endif; ?>
 
                 <!-- Href to user profil -->
-                <a href="<?= $path . "/src/freelancer/profile.php?id=" . $user['id'] ?>" class="bg-gray p-[5] flex items-center">
+                <a href="<?= $path . "/src/freelancer/profile.php?id=" . $user['id'] ?>" class="bg-gray p-[5px] flex items-center">
                     <span class="text-gray-300">
                         <?= $user['fullName'] ?>
                     </span>
-                    <img src="<?= $path . $user['photo_src'] ?>" alt="userPhoto" class=" ml-2 w-12 h-12 rounded-full cover border-4 <?=$role_color?>">
+                    <img src="<?= $path . $user['photo_src'] ?>" alt="userPhoto" class=" ml-2 w-12 h-12 rounded-full cover border-4 <?= $role_color ?>">
                     </img>
                 </a>
             </div>

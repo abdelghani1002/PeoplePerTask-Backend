@@ -1,10 +1,11 @@
 <?php
 session_start();
 require '../includes/connection.php';
+$path = "..";
 
 function sign_up()
 {
-    global $conn;
+    global $conn, $path;
 
     $fullname = trim($_POST['fullName']);
     $email = trim($_POST['email']);
@@ -15,14 +16,21 @@ function sign_up()
     // Inputs Validation and filtering
     if (empty($fullname) || empty($email) || empty($password) || empty($confirmpassword) || empty($city_id)) {
         $_SESSION['message'] = "Please fill in all the required fields.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
+        header("Location:" . $path . '/src/authForm.php?form=sign_up');
+        return;
+    }
+    
+    // Validate name
+    if (!preg_match("/^[a-zA-Z ]*$/", $fullname)) {
+        $_SESSION['message'] = "Invalide name.";
+        header("Location:" . $path . '/src/authForm.php?form=sign_up');
         return;
     }
 
     // Validate email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['message'] = "Invalid email format.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
+        header("Location:" . $path . '/src/authForm.php?form=sign_up');
         return;
     }
 
@@ -35,21 +43,21 @@ function sign_up()
     if ($res_email && mysqli_num_rows($res_email) == 1) {
         mysqli_stmt_close($stmt_email);
         $_SESSION['message'] = "Email already exists. try to sign up with an other email.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
+        header("Location:" . $path . '/src/authForm.php?form=sign_up');
         return;
     }
 
     // Validate password length (you can adjust the length based on your requirements)
     // if (strlen($password) < 8) {
     //     $_SESSION['message'] = "Password must be at least 8 characters long.";
-    //     header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
+    //     header("Location:" . $path . '/src/authForm.php?form=sign_up');
     //     return;
     // }
 
     // Check if password and confirm password match
     if ($password !== $confirmpassword) {
         $_SESSION['message'] = "Password and Confirm Password do not match.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
+        header("Location:" . $path . '/src/authForm.php?form=sign_up');
         return;
     }
 
@@ -66,30 +74,30 @@ function sign_up()
     $res = mysqli_stmt_execute($stmt);
     if (!$res) {
         $_SESSION['message'] = "request Invalide";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=sign_up');
+        header("Location:" . $path . '/src/authForm.php?form=sign_up');
         return;
     }
     $user_info_sql = "SELECT * FROM users WHERE email = '$email'";
     $res = mysqli_query($conn, $user_info_sql);
     mysqli_stmt_close($stmt);
     $_SESSION['user'] = mysqli_fetch_assoc($res);
-    header('location:' . $_ENV['PROJECT_DIR'] . '/index.php');
+    header('location:' . $path . '/index.php');
 }
 
 function login()
 {
-    global $conn;
+    global $conn, $path;
 
     if (!isset($_POST['email']) || !isset($_POST['password'])) {
         $_SESSION['message'] = "Please fill in all the required fields.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=login');
+        header("Location:" . $path . '/src/authForm.php?form=login');
         return;
     }
 
     $input_email = trim($_POST['email']);
     if (!filter_var($input_email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['message'] = "Invalid email.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=login');
+        header("Location:" . $path . '/src/authForm.php?form=login');
         return;
     }
 
@@ -101,7 +109,7 @@ function login()
     if (!$res_email || mysqli_num_rows($res_email) !== 1) {
         mysqli_stmt_close($stmt_email);
         $_SESSION['message'] = "Email doesn't exist. try to sign up first.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=login');
+        header("Location:" . $path . '/src/authForm.php?form=login');
         return;
     }
 
@@ -114,7 +122,7 @@ function login()
     if (!$res_password || !password_verify($input_password, mysqli_fetch_assoc($res_password)['hashed_password'])) {
         mysqli_stmt_close($stmt_password);
         $_SESSION['message'] = "Password Incorrect.";
-        header("Location:" . $_ENV['PROJECT_DIR'] . '/src/authForm.php?form=login');
+        header("Location:" . $path . '/src/authForm.php?form=login');
         return;
     }
 
@@ -122,15 +130,15 @@ function login()
 
     $res_user = mysqli_query($conn, "SELECT * FROM users WHERE email='$input_email'");
     $_SESSION['user'] = mysqli_fetch_assoc($res_user);
-    switch ($_SESSION['user']['role']){
-        case "freelancer" :
-            header('location:' . $_ENV['PROJECT_DIR'] . '/src/freelancer/profile.php');
+    switch ($_SESSION['user']['role']) {
+        case "freelancer":
+            header('location:' . $path . '/src/freelancer/profile.php?id=' . $_SESSION['user']['id']);
             break;
-        case "admin" :
-            header('location:' . $_ENV['PROJECT_DIR'] . '/dashboard.php');
+        case "admin":
+            header('location:' . $path . '/dashboard.php');
             break;
         default:
-            header('location:' . $_ENV['PROJECT_DIR'] . '/index.php');
+            header('location:' . $path . '/index.php');
             break;
     }
     return;
@@ -138,9 +146,10 @@ function login()
 
 function logout()
 {
+    global $path;
     $_SESSION['old_email'] = $_SESSION['user']['email'];
     unset($_SESSION['user']);
-    header('location:' . $_ENV['PROJECT_DIR'] . '/index.php');
+    header('location:' . $path . '/index.php');
 }
 
 if (isset($_POST)) {

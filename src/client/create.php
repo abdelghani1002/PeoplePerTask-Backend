@@ -6,26 +6,13 @@ require '../validation.php';
 if (isset($_POST)) {
     if (!(empty($_POST['name']) && empty($_POST['email']) && empty($_POST['password']) && empty($_POST['city']))) {
         $name = $_POST['name'];
-        $username = $_POST['username'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         $city_id = $_POST['city'];
-        $role = "freelancer";
 
         // name
         if (!is_valide("name", $name)) {
             redirect("./createForm.php", "Invalide name!", "error");
-        }
-
-        // username
-        $res_valide = is_valide("username", $username);
-        if ($res_valide === "exists") {
-            redirect("./createForm.php", "Username already exists!", "error");
-            exit;
-        }
-        if (!$res_valide) {
-            redirect("./createForm.php", "Invalide username!", "error");
-            exit;
         }
 
         // email
@@ -34,7 +21,7 @@ if (isset($_POST)) {
             redirect("./createForm.php", "Email already exists!", "error");
             exit;
         }
-        if ($res_valide === false) {
+        if ($res_email === false) {
             redirect("./createForm.php", "Invalide email!", "error");
             exit;
         }
@@ -42,10 +29,10 @@ if (isset($_POST)) {
         // password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $stmt = mysqli_prepare($conn, "INSERT into users(`fullName`, `email`, `password`, `city_id`, `role`, `username`) values (?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "sssiss", $name, $email, $hashed_password, $city_id, $role, $username);
+        $stmt = mysqli_prepare($conn, "INSERT into users(`fullName`, `email`, `password`, `city_id`) values (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "sssi", $name, $email, $hashed_password, $city_id);
         if (mysqli_stmt_execute($stmt)) {
-            $_SESSION['message'] = "Freelancer has been created Successfully";
+            $_SESSION['message'] = "Client has been created Successfully";
             $_SESSION['message_type'] = "success";
             header("location:./index.php", 201);
         } else {

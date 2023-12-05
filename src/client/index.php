@@ -35,7 +35,7 @@ if (isset($_SESSION['message'])) {
             height: 85.7%;
         }
 
-        .freelancers {
+        .clients {
             background-color: rgb(55 65 81 / var(--tw-bg-opacity));
         }
     </style>
@@ -53,10 +53,10 @@ if (isset($_SESSION['message'])) {
         <!-- Freelancers -->
         <section class="flex flex-col px-2 w-5/6">
             <div class="flex flex-row items-center">
-                <h3 class="my-3 mr-auto text-2xl font-bold text-cyan-800">List of Freelancers (<small><?= get_freelancers_count() ?></small>)</h3>
+                <h3 class="my-3 mr-auto text-2xl font-bold text-cyan-800">List of Clients (<small><?= get_clients_count() ?></small>)</h3>
                 <a class="cursor-pointer text-white font-bold bg-blue-600 rounded-xl p-2 h-10 hover:bg-blue-600"
                     href="./createForm.php">
-                    + Add Freelancer
+                    + Add Client
                 </a>
             </div>
             <div class="flex flex-col">
@@ -84,15 +84,14 @@ if (isset($_SESSION['message'])) {
                     <tbody>
                         <?php
                         $sql = "SELECT  users.id     AS id
-                                        ,`username`   AS name
+                                        ,`fullName`   AS name
                                         ,email
-                                        ,rating
                                         ,users.photo_src AS photo_src
                                         ,cities.name  AS city
                                 FROM users
                                 INNER JOIN cities
                                 ON users.city_id = cities.id
-                                WHERE `role` = 'freelancer'
+                                WHERE `role` = 'client'
                                 order by id
                             ;";
                         $res = mysqli_query($conn, $sql);
@@ -100,7 +99,6 @@ if (isset($_SESSION['message'])) {
                             while ($row = mysqli_fetch_assoc($res)) :
                                 $id = $row['id'];
                                 $name = $row['name'];
-                                $rating = $row['rating'];
                                 $email = $row['email'];
                                 $photo_src = $row['photo_src'];
                                 $city = $row['city'];
@@ -115,8 +113,7 @@ if (isset($_SESSION['message'])) {
                                     <td class="p-2 border-r border-white flex flex-row items-center gap-x-2">
                                         <img class="w-10 h-10 rounded-full" src="<?= $path . $photo_src ?>" alt="freelancer photo">
                                         <div class="flex flex-row justify-between w-full">
-                                            <div class="w-1/2"><?= $name ?></div>
-                                            <div class="mx-auto">&#9733; <?= $rating ?></div>
+                                            <div><?= $name ?></div>
                                         </div>
                                     </td>
                                     <td class="p-2 border-r border-white"> <?= $email ?> </td>
@@ -124,7 +121,7 @@ if (isset($_SESSION['message'])) {
                                     <td class="text-right border-r border-white center">
                                         <form class="text-center" action="../delete.php" method="POST">
                                             <input type="hidden" name="id" id="id" value="<?= $id ?>">
-                                            <input type="hidden" name="entity" id="entity" value="freelancer">
+                                            <input type="hidden" name="entity" id="entity" value="client">
                                             <button type="submit" class="hover:bg-red-500 hover:text-white text-red-500 border border-red-500 rounded-md p-2" onclick="return confirmDelete()">
                                                 Delete
                                             </button>

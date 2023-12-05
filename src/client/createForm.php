@@ -48,8 +48,6 @@ if (isset($_SESSION['message'])) {
         <form class="flex flex-col flex-grow w-100" action="./create.php" method="POST">
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="name" id="name" placeholder="Full name">
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="text" name="username" id="username" placeholder="User name">
-
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="email" name="email" id="email" placeholder="Email">
 
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md" type="password" name="password" id="password" placeholder="Password">
