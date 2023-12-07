@@ -56,12 +56,13 @@ session_start();
             }
             ?>
 
-            <form action="<?= $_ENV["PROJECT_DIR"] . '/src/auth.php?func=login' ?>" method="post">
+            <form id="login-form" action="<?= $_ENV["PROJECT_DIR"] . '/src/auth.php?func=login' ?>" method="post">
               <div class="input-boxes">
                 <div class="input-box">
                   <i class="fas fa-envelope"></i>
-                  <input type="text" name="email" placeholder="Enter your email" required value="<?php if (isset($_SESSION['old_email'])) echo $_SESSION['old_email'];
-                                                                                                  else null  ?>">
+                  <input type="text" name="email" placeholder="Enter your email" required
+                        value="<?php if (isset($_COOKIE['old_email'])) echo $_COOKIE['old_email'];
+                                    else null  ?>">
                 </div>
                 <div class="input-box">
                   <i class="fas fa-lock"></i>
@@ -90,7 +91,7 @@ session_start();
             }
             ?>
 
-            <form action="<?= $_ENV["PROJECT_DIR"] . '/src/auth.php?func=sign_up' ?>" method="post">
+            <form id="sign-up-form" action="<?= $_ENV["PROJECT_DIR"] . '/src/auth.php?func=sign_up' ?>" method="post">
               <div class="input-boxes">
 
                 <div class="input-box">
@@ -173,6 +174,11 @@ session_start();
                   </select>
                 </div>
 
+                <div id="username-field" class="hidden">
+                  <i class="fas fa-user"></i>
+                  <input type="text" name="username" placeholder="Enter username">
+                </div>
+
                 <div class="button input-box">
                   <input type="submit" name="register" value="Sing up">
                 </div>
@@ -193,9 +199,19 @@ session_start();
     </div>
   </div>
 
+
+  <script src="../assets/javascript/jquery.js"></script>
   <script>
     // 1) get URL and switch between sign up and login
     // 2) get region cities async
+    // 3) switch radio
+    $(document).ready(function() {
+      $("#sign-up-form").change(() => {
+        if (document.getElementById("radio-freelancer").checked) {
+          document.getElementById("username-field").classList.remove("d-none");
+        }
+      })
+    })
   </script>
 
 </body>

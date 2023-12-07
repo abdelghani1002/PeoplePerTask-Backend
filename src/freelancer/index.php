@@ -90,7 +90,7 @@ if (isset($_SESSION['message'])) {
                                         ,users.photo_src AS photo_src
                                         ,cities.name  AS city
                                 FROM users
-                                INNER JOIN cities
+                                LEFT JOIN cities
                                 ON users.city_id = cities.id
                                 WHERE `role` = 'freelancer'
                                 order by id

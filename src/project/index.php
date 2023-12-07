@@ -95,12 +95,13 @@ if (isset($_SESSION['message'])) {
                                     ,u2.`photo_src` as freelancer_photo_src
                                     ,s.`name` as subcategory
                                 FROM projects p
-                                INNER JOIN users u
+                                LEFT JOIN users u
                                 ON p.user_id = u.id
-                                INNER JOIN subcategories s
+                                LEFT JOIN subcategories s
                                 ON s.id = p.subcategory_id
-                                INNER JOIN users u2 
+                                LEFT JOIN users u2 
                                 ON p.`hired_freelancer_id` = u2.`id`
+                                ORDER BY hired_freelancer
                                 ;";
                         $res = mysqli_query($conn, $sql);
                         if (mysqli_num_rows($res)) :

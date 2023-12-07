@@ -20,6 +20,7 @@ $sql2 = "SELECT cities.name as city, cities.region_id, regions.name as region
         WHERE users.id = $id;
         ";
 $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
+
 ?>
 
 <!DOCTYPE html>
@@ -200,7 +201,6 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
             </div>
         </section>
     </main>
-
 
     <script>
         function confirmDelete() {

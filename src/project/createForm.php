@@ -5,16 +5,13 @@ require '../../includes/connection.php';
 $path = "../..";
 
 // Role validation
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] == "freelancer") {
     header("Location:./index.php");
     exit;
 }
 
 // back url
-if ($_SESSION['user']['role'] == 'user')
-    $back = "../../index.php";
-else
-    $back = $_SESSION['user']['role'] == 'admin' ?  "./index.php" : "../../src/freelancer/profile.php";
+// $_SESSION['user']['role'] == 'admin' ? $back = "./index.php" : $back = "../client/profile.php?id=" . $_SESSION['user']['id'];
 
 // get session message
 if (isset($_SESSION['message'])) {
@@ -36,12 +33,12 @@ if (isset($_SESSION['message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/dist/output.css">
     <link rel="stylesheet" href="../../assets/css/input.css">
-    <title>Category-Create</title>
+    <title>Project-Create</title>
 </head>
 
 <body class="bg-gray-100 h-100 flex flex-col">
     <div class="absolute p-5">
-        <a href="<?= $back ?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
+        <a href="<?=$_SERVER['HTTP_REFERER']?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
             <- Back </a>
     </div>
 

@@ -4,7 +4,7 @@ function redirect($message, $message_type, $res_code, $back_path = "./createForm
 {
     $_SESSION['message'] = $message;
     $_SESSION['message_type'] = $message_type;
-    header('location:' . $back_path, $res_code);
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 function get_top_categories()

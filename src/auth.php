@@ -12,6 +12,7 @@ function sign_up()
     $password = trim($_POST['password']);
     $confirmpassword = trim($_POST['confirmpassword']);
     $city_id = $_POST['city_id'];
+    $role = $_POST['role'];
 
     // Inputs Validation and filtering
     if (empty($fullname) || empty($email) || empty($password) || empty($confirmpassword) || empty($city_id)) {
@@ -147,7 +148,7 @@ function login()
 function logout()
 {
     global $path;
-    $_SESSION['old_email'] = $_SESSION['user']['email'];
+    setcookie('old_email', $_SESSION['user']['email']);
     unset($_SESSION['user']);
     header('location:' . $path . '/index.php');
 }

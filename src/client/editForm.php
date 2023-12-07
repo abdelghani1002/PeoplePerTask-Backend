@@ -45,11 +45,12 @@ if (isset($_SESSION['message'])) {
 
 <body class="bg-gray-100 h-100 flex flex-col">
     <div class="absolute p-5">
-        <a href="../freelancers.php" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
+        <a href="<?=$_SERVER['HTTP_REFERER']?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
             <- Back </a>
     </div>
 
-    <div class="w-1/3 m-auto h-100 pt-10"><!-- Alert request message  -->
+    <div class="w-1/3 m-auto h-100 pt-10">
+        <!-- Alert request message  -->
         <?php if (isset($message)) : ?>
             <div class="p-1 text-sm text-center rounded-lg" role="alert">
                 <span class="font-medium <?php $message_type == 'success' ? $success_class : $error_class ?>"><?= $message ?></span>

@@ -20,7 +20,7 @@ $row = mysqli_fetch_assoc($result);
 $incompleted_projects_count = $row["count"];
 
 // Revenue of freelancers
-$sql_query = "select SUM(price) as revenue from projects where status = 'completed';";
+$sql_query = "SELECT SUM(price) as revenue from projects where status = 'completed';";
 $result = mysqli_query($conn, $sql_query);
 $row = mysqli_fetch_assoc($result);
 $revenue = $row['revenue'];

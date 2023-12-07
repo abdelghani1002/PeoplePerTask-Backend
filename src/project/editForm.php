@@ -6,15 +6,15 @@ $path = "../..";
 
 // Role validation
 if (!isset($_SESSION['user']) || !isset($_POST['id'])) {
-    header("Location:./index.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit;
 }
 
 // back url
-if ($_SESSION['user']['role'] == 'user')
-    $back = "../../index.php";
-else
-    $back = $_SESSION['user']['role'] == 'admin' ?  "./index.php" : "../../src/freelancer/profile.php";
+// if ($_SESSION['user']['role'] == 'user')
+//     $back = "../../index.php";
+// else
+//     $back = $_SESSION['user']['role'] == 'admin' ?  "./index.php" : "../../src/freelancer/profile.php";
 
 // get session message
 if (isset($_SESSION['message'])) {
@@ -45,7 +45,7 @@ $project = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * from projects where 
 
 <body class="bg-gray-100 h-100 flex flex-col">
     <div class="absolute p-5">
-        <a href="<?= $back ?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
+        <a href="<?=$_SERVER['HTTP_REFERER']?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
             <- Back </a>
     </div>
 

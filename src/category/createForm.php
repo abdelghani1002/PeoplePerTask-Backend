@@ -33,7 +33,7 @@ $error_class = "text-green-800 bg-green-50";
 
 <body class="bg-gray-100 h-100 flex flex-col">
     <div class="absolute p-5">
-        <a href="./index.php" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
+        <a href="<?=$_SERVER['HTTP_REFERER']?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
             <- Back </a>
     </div>
 

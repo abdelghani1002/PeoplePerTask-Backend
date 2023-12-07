@@ -89,7 +89,7 @@ if (isset($_SESSION['message'])) {
                                         ,users.photo_src AS photo_src
                                         ,cities.name  AS city
                                 FROM users
-                                INNER JOIN cities
+                                LEFT JOIN cities
                                 ON users.city_id = cities.id
                                 WHERE `role` = 'client'
                                 order by id
@@ -106,12 +106,12 @@ if (isset($_SESSION['message'])) {
                                 <tr class="odd:bg-gray-200 even:bg-gray-300">
                                     <td class="p-2 border-r border-white text-center">
                                         <a class="p-1.5 rounded-lg text-green-700 font-bold border border-emerald-500 hover:bg-emerald-500 hover:text-white"
-                                            href="<?= $path . "/src/freelancer/profile.php?id=" . $id ?>">
+                                            href="<?= $path . "/src/client/profile.php?id=" . $id ?>">
                                             +
                                         </a>
                                     </td>
                                     <td class="p-2 border-r border-white flex flex-row items-center gap-x-2">
-                                        <img class="w-10 h-10 rounded-full" src="<?= $path . $photo_src ?>" alt="freelancer photo">
+                                        <img class="w-10 h-10 rounded-full" src="<?= $path . $photo_src ?>" alt="client photo">
                                         <div class="flex flex-row justify-between w-full">
                                             <div><?= $name ?></div>
                                         </div>

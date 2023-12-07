@@ -85,7 +85,7 @@ if (isset($_SESSION['user'])) {
                 <?php endif; ?>
 
                 <!-- Href to user profil -->
-                <a href="<?= $path . "/src/freelancer/profile.php?id=" . $user['id'] ?>" class="bg-gray p-[5px] flex items-center">
+                <a href="<?= $path . "/src/" . $user['role'] . "/profile.php?id=" . $user['id'] ?>" class="bg-gray p-[5px] flex items-center">
                     <span class="text-gray-300">
                         <?= $user['fullName'] ?>
                     </span>
