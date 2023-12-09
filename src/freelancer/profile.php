@@ -125,6 +125,10 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                                 <?= $location['city'] . ", " . $location['region'] ?>
                             </div>
                         </div>
+
+
+                        <!-- Freelancer assigned projects  -->
+                        <h2 class="font-bold text-xl">My Assigned projects</h2>
                         <?php if (
                             isset($_SESSION['user'])
                             && $_SESSION['user']['role'] == 'freelancer'
@@ -132,7 +136,6 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                         ) : ?>
                             <div class="py-10 border-t border-blueGray-200 text-center">
                                 <div class="flex flex-wrap justify-center">
-                                    <!-- Table -->
                                     <table class="table-auto w-full text-sm whitespace-no-wrap border-spacing-2">
                                         <thead>
                                             <tr class="bg-gray-400">
@@ -147,19 +150,94 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                                         <tbody>
                                             <?php
                                             $query = "SELECT  
-                                                    p.`id` as project_id
-                                                    ,`title`
-                                                    ,`price`
-                                                    ,`duration`
-                                                    ,u.`fullName` AS poster_name
-                                                    ,u.`photo_src` as poster_photo_src
-                                                    ,s.`name` as subcategory
-                                                FROM projects p
-                                                INNER JOIN subcategories s
-                                                ON s.id = p.subcategory_id
-                                                INNER JOIN users u
-                                                ON p.`user_id` = u.`id`
-                                                ;";
+                                                        p.`id` as project_id
+                                                        ,`title`
+                                                        ,`price`
+                                                        ,`duration`
+                                                        ,u.`fullName` AS poster_name
+                                                        ,u.`photo_src` as poster_photo_src
+                                                        ,s.`name` as subcategory
+                                                    FROM projects p
+                                                    INNER JOIN subcategories s
+                                                    ON s.id = p.subcategory_id
+                                                    INNER JOIN users u
+                                                    ON p.`user_id` = u.`id`
+                                                    WHERE p.`hired_freelancer_id` = " . $freelancer['id']
+                                                    ;
+                                            $res = mysqli_query($conn, $query);
+                                            if (mysqli_num_rows($res)) :
+                                                while ($row = mysqli_fetch_assoc($res)) :
+                                                    $project_id = $row['project_id'];
+                                                    $title = $row['title'];
+                                                    $price = $row['price'];
+                                                    $duration = $row['duration'];
+                                                    $poster_name = $row['poster_name'];
+                                                    $poster_photo_src = $row['poster_photo_src'];
+                                                    $subcategory = $row['subcategory'];
+                                            ?>
+                                                    <tr class="odd:bg-gray-200 even:bg-gray-300">
+                                                        <td class="p-1 border-r border-white flex flex-row items-center gap-x-2">
+                                                            <img class="w-7 h-7 rounded-full" src="<?= $path . $poster_photo_src ?>" alt="Poster photo">
+                                                            <div><?= $poster_name ?></div>
+                                                        </td>
+                                                        <td class="p-1 border-r border-white"> <?= $title ?> </td>
+                                                        <td class="p-1 border-r border-white font-semibold"> <?= $price ?> $</td>
+                                                        <td class="p-1 border-r border-white"> <?= $duration ?> </td>
+                                                        <td class="p-1 border-r border-white font-semibold"> <?= $subcategory ?> </td>
+                                                        <td class="p-1 border-r border-white">
+                                                            <a class="p-1.5 rounded-lg text-green-700 font-bold border border-emerald-500 hover:bg-emerald-500 hover:text-white" href="<?= $path . "/src/project/view.php?id=" . $project_id ?>">
+                                                                + show more
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                            <?php
+                                                endwhile;
+                                            endif;
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+
+                        <!-- Projects with No assigned freelancer -->
+                        <h2 class="font-bold text-xl">Projects with no hired freelancer</h2>
+                        <?php if (
+                            isset($_SESSION['user'])
+                            && $_SESSION['user']['role'] == 'freelancer'
+                            && isset($_GET['id'])
+                        ) : ?>
+                            <div class="py-10 border-t border-blueGray-200 text-center">
+                                <div class="flex flex-wrap justify-center">
+                                    <table class="table-auto w-full text-sm whitespace-no-wrap border-spacing-2">
+                                        <thead>
+                                            <tr class="bg-gray-400">
+                                                <th class="p-1 border-r border-gray-400 w-2/12">Poster</th>
+                                                <th class="p-1 border-r border-gray-400">Title</th>
+                                                <th class="p-1 border-r border-gray-400">Price</th>
+                                                <th class="p-1 border-r border-gray-400">Duration</th>
+                                                <th class="p-1 border-r border-gray-400">Category</th>
+                                                <th class="p-1 border-r border-gray-400">Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $query = "SELECT  
+                                                        p.`id` as project_id
+                                                        ,`title`
+                                                        ,`price`
+                                                        ,`duration`
+                                                        ,u.`fullName` AS poster_name
+                                                        ,u.`photo_src` as poster_photo_src
+                                                        ,s.`name` as subcategory
+                                                    FROM projects p
+                                                    INNER JOIN subcategories s
+                                                    ON s.id = p.subcategory_id
+                                                    INNER JOIN users u
+                                                    ON p.`user_id` = u.`id`
+                                                    WHERE p.`hired_freelancer_id` IS NULL
+                                                    ;";
                                             $res = mysqli_query($conn, $query);
                                             if (mysqli_num_rows($res)) :
                                                 while ($row = mysqli_fetch_assoc($res)) :

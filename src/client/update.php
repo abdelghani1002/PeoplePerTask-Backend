@@ -3,7 +3,6 @@ require "../../includes/connection.php";
 session_start();
 require "../validation.php";
 
-
 if (isset($_POST['id'])) {
 
     if (!(empty($_POST["name"]) && empty($_POST["email"]) && empty($_POST["username"]) && empty($_POST["city"]))) {
@@ -16,28 +15,28 @@ if (isset($_POST['id'])) {
 
         // name
         if (!is_valide("name", $name)) {
-            redirect("./editForm.php", "Invalide name!", "error");
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
 
         // username
         $res_username = is_valide("username", $username, $id);
         if ($res_username === "exists") {
-            redirect("./editForm.php", "Username already exists!", "error");
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
         if ($res_username === false) {
-            redirect("./editForm.php", "Invalide username!", "error");
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
 
         // email
         $res_email = is_valide('email', $email, $id);
         if ($res_email === "exists") {
-            redirect("./editForm.php", "Email already exists!", "error");
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
         if ($res_email === false) {
-            redirect("./editForm.php", "Invalide email!", "error");
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
 

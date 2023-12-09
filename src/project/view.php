@@ -17,8 +17,15 @@ if (isset($_GET['id'])) {
         echo "Not found.";
         exit;
     }
-    $project = mysqli_fetch_assoc($res);
 }
+$project = mysqli_fetch_assoc($res);
+
+$diff = strtotime($project['duration']) - strtotime("now");
+$days = floor($diff / (60 * 60 * 24));
+$hours = gmdate("H", $diff);
+$minutes = gmdate("i", $diff);
+$seconds = gmdate("s", $diff);
+$ends_in = sprintf('%02d days %02d:%02d:%02d', $days, $hours, $minutes, $seconds);
 
 // get session message
 if (isset($_SESSION['message'])) {
@@ -62,7 +69,7 @@ if (isset($_SESSION['message'])) {
                             <div class="dark:text-gray-200">
                                 Ends in
                                 <strong class="dark:text-fuchsia-200">
-                                    <?= $project['duration'] ?>
+                                    <?= $ends_in ?>
                                 </strong>
                                 hours
                             </div>
@@ -91,7 +98,7 @@ if (isset($_SESSION['message'])) {
                 </div>
 
                 <?php
-                if (isset($_SESSION['user']) && $_SESSION['user']['role'] === "freelancer") {
+                if (isset($_SESSION['user']) && $_SESSION['user']['role'] === "freelancer" && $_SESSION['user']['id'] !== $project['hired_freelancer_id']) {
                 ?>
                     <div class="flex flex-col justify-center h-full px-2">
                         <!-- Alert request message  -->

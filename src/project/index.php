@@ -149,33 +149,34 @@ if (isset($_SESSION['message'])) {
                                                 </button>
 
                                                 <div class="d-none flex flex-row gap-x-2">
-                                                    <select class="freelancers-select top-9 z-50 left-0 float-left p-2 bg-gray-200 rounded-md" name="freelancer" id="freelancer">
-                                                        <option class="d-none" value="" selected disabled>Select a freelancer</option>
-                                                        <?php
-                                                        $sql2 = "SELECT * from users WHERE `role` = 'freelancer';";
-                                                        $freelancers = mysqli_query($conn, $sql2);
-                                                        if (mysqli_num_rows($freelancers) > 0) {
-                                                            while ($freelancer = mysqli_fetch_assoc($freelancers)) :
-                                                                $freelancer_id = $freelancer['id'];
-                                                                $freelancer_name = $freelancer['username'];
-                                                                $freelancer_photo_src = ['freelancer_photo_src'];
-                                                        ?>
-                                                                <option class="bg-gray-100 <?="bg-[url('". $path . $freelancer_photo_src ."')] cover"?>" value="<?= $freelancer_id ?>">
-                                                                    <?= $freelancer_name ?>
-                                                                </option>
-                                                            <?php
-                                                            endwhile;
-                                                            ?>
-                                                        <?php
-                                                        } else {
-                                                            echo "<p> No freelancer available </p>";
-                                                        }
-                                                        ?>
-                                                    </select>
                                                     <form action="./assigne.php" method="POST">
-                                                        <input class="assigned-freelancer" type="hidden" name="freelancer_id">
-                                                        <input type="hidden" name="project_id" value="<?=$id?>">
-                                                        <button class="hover:bg-sky-900 bg-sky-300 text-sky-900 border rounded-md p-2 border-sky-900 hover:text-white">
+
+                                                        <select class="freelancers-select top-9 z-50 left-0 float-left p-2 bg-gray-200 rounded-md"
+                                                                name="freelancer_id" id="freelancer_id">
+                                                            <option class="d-none" value="" selected disabled>Select a freelancer</option>
+                                                            <?php
+                                                            $sql2 = "SELECT * from users WHERE `role` = 'freelancer';";
+                                                            $freelancers = mysqli_query($conn, $sql2);
+                                                            if (mysqli_num_rows($freelancers) > 0) {
+                                                                while ($freelancer = mysqli_fetch_assoc($freelancers)) :
+                                                                    $freelancer_id = $freelancer['id'];
+                                                                    $freelancer_name = $freelancer['username'];
+                                                                    $freelancer_photo_src = ['freelancer_photo_src'];
+                                                            ?>
+                                                                    <option class="bg-gray-100 <?= "bg-[url('" . $path . $freelancer_photo_src . "')] cover" ?>" value="<?= $freelancer_id ?>">
+                                                                        <?= $freelancer_name ?>
+                                                                    </option>
+                                                                <?php
+                                                                endwhile;
+                                                                ?>
+                                                            <?php
+                                                            } else {
+                                                                echo "<p> No freelancer available </p>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                        <button class="hover:bg-sky-900 bg-sky-300 text-sky-900 border rounded-md p-2 border-sky-900 hover:text-white"
+                                                                name="project_id" value="<?= $id ?>">
                                                             Save
                                                         </button>
                                                     </form>
@@ -231,18 +232,7 @@ if (isset($_SESSION['message'])) {
             $(".assigne-btn").click(function() {
                 $(this).next().toggleClass('d-none').click();
             });
-            
-            $(".freelancers-select").change(function () {
-                // Get the selected freelancer ID from the data attribute
-                const selectedFreelancerId = $(this).val();
-                console.log(selectedFreelancerId);
-    
-                // Set the value of the hidden input field
-                $(".assigned-freelancer").val(selectedFreelancerId);
-            });
         });
-
-
     </script>
 
 </body>

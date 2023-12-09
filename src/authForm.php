@@ -12,6 +12,11 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="../assets/css/login.css">
+  <style>
+    .d-none{
+      display: none !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -95,18 +100,31 @@ session_start();
               <div class="input-boxes">
 
                 <div class="input-box">
+                  <label for="client">Client</label>
+                  <input name="role" type="radio" id="client" value="client" checked>
+
+                  <label for="freelancer">Freelancer</label>
+                  <input name="role" type="radio" id="freelancer" value="freelancer">
+                </div>
+
+                <div class="input-box">
                   <i class="fas fa-user"></i>
-                  <input name="fullName" type="text" placeholder="Enter your name" required>
+                  <input name="fullName" type="text" placeholder="Enter full name" required>
+                </div>
+
+                <div class="d-none input-box" id="username-field">
+                  <i class="fas fa-user"></i>
+                  <input type="text" name="username" placeholder="Enter username">
                 </div>
 
                 <div class="input-box">
                   <i class="fas fa-envelope"></i>
-                  <input type="email" name="email" placeholder="Enter your email" required>
+                  <input type="email" name="email" placeholder="Enter email" required>
                 </div>
 
                 <div class="input-box">
                   <i class="fas fa-lock"></i>
-                  <input type="password" name="password" placeholder="Enter your password" required>
+                  <input type="password" name="password" placeholder="Enter password" required>
                 </div>
 
                 <div class="input-box">
@@ -174,11 +192,6 @@ session_start();
                   </select>
                 </div>
 
-                <div id="username-field" class="hidden">
-                  <i class="fas fa-user"></i>
-                  <input type="text" name="username" placeholder="Enter username">
-                </div>
-
                 <div class="button input-box">
                   <input type="submit" name="register" value="Sing up">
                 </div>
@@ -203,12 +216,17 @@ session_start();
   <script src="../assets/javascript/jquery.js"></script>
   <script>
     // 1) get URL and switch between sign up and login
+
     // 2) get region cities async
+
     // 3) switch radio
+
     $(document).ready(function() {
       $("#sign-up-form").change(() => {
-        if (document.getElementById("radio-freelancer").checked) {
+        if (document.getElementById("freelancer").checked) {
           document.getElementById("username-field").classList.remove("d-none");
+        }else{
+          document.getElementById("username-field").classList.add("d-none");
         }
       })
     })

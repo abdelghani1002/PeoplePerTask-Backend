@@ -1,6 +1,7 @@
 <?php
 session_start();
 require '../includes/connection.php';
+require './validation.php';
 $path = "..";
 
 function sign_up()
@@ -13,9 +14,10 @@ function sign_up()
     $confirmpassword = trim($_POST['confirmpassword']);
     $city_id = $_POST['city_id'];
     $role = $_POST['role'];
+    $role === "client" ? $username = NULL : $username = trim($_POST['username']);
 
     // Inputs Validation and filtering
-    if (empty($fullname) || empty($email) || empty($password) || empty($confirmpassword) || empty($city_id)) {
+    if (empty($fullname) || empty($email) || empty($password) || empty($confirmpassword) || empty($city_id) || empty($username)) {
         $_SESSION['message'] = "Please fill in all the required fields.";
         header("Location:" . $path . '/src/authForm.php?form=sign_up');
         return;
@@ -48,6 +50,21 @@ function sign_up()
         return;
     }
 
+    if($username !== NULL){
+        if (is_valide('username', $username) === 'exists'){
+                $_SESSION['message'] = "username alraedy exists";
+                $_SESSION['message_type'] = "error";
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
+        }
+        if (!is_valide('username', $username)) {
+                $_SESSION['message'] = "username invalide";
+                $_SESSION['message_type'] = "error";
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit;
+        }
+    }
+
     // Validate password length (you can adjust the length based on your requirements)
     // if (strlen($password) < 8) {
     //     $_SESSION['message'] = "Password must be at least 8 characters long.";
@@ -63,15 +80,15 @@ function sign_up()
     }
 
     // Create the new user
-    $sql = "INSERT INTO users(fullName, email, password, city_id)
-            Values (?, ?, ?, ?)
+    $sql = "INSERT INTO users(fullName, email, password, role, username, city_id)
+            Values (?, ?, ?, ?, ?, ?)
             ;";
 
     $stmt = mysqli_prepare($conn, $sql);
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    mysqli_stmt_bind_param($stmt, "sssi", $fullname, $email, $hashed_password, $city_id);
+    mysqli_stmt_bind_param($stmt, "sssssi", $fullname, $email, $hashed_password, $role, $username, $city_id);
     $res = mysqli_stmt_execute($stmt);
     if (!$res) {
         $_SESSION['message'] = "request Invalide";
@@ -80,9 +97,9 @@ function sign_up()
     }
     $user_info_sql = "SELECT * FROM users WHERE email = '$email'";
     $res = mysqli_query($conn, $user_info_sql);
-    mysqli_stmt_close($stmt);
     $_SESSION['user'] = mysqli_fetch_assoc($res);
-    header('location:' . $path . '/index.php');
+    mysqli_stmt_close($stmt);
+    $role === 'client' ? header('location:' . $path . '/index.php') : header('location:' . $path . '/src/freelancer/profile.php?id=' . $_SESSION['user']['id']);
 }
 
 function login()

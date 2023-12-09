@@ -2,41 +2,42 @@
 session_start();
 
 
-function redirect(){
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
-}
-
 // role validation
-if(!isset($_SESSION['user']) || $_SESSION['user'] == 'freelancer'){
-    redirect();
+if (!isset($_SESSION['user']) || $_SESSION['user'] == 'freelancer') {
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit;
 }
 
 include "../../includes/connection.php";
 
-if(isset($_POST['project_id'])
+if (
+    isset($_POST['project_id'])
     && isset($_POST['freelancer_id'])
-    && $_POST['freelancer_id'] != ""
-    && $_POST['project_id'] != ""){
+    && is_numeric($_POST['freelancer_id'])
+    && is_numeric($_POST['project_id'])
+) {
     $freelancer_id = $_POST['freelancer_id'];
     $project_id = $_POST['project_id'];
-    if(!(is_numeric($freelancer_id) && is_numeric($project_id))){
-        header("Location:./index.php");
-        exit;
-    }
+
     $sql = "UPDATE projects
             SET
-                `hired_freelancer_id` = $freelancer_id
+                `hired_freelancer_id` = $freelancer_id,
+                `status` = 'inprogress'
             WHERE
                 `id` = $project_id
             ;";
-    $res = mysqli_query($conn, $sql);
-    if($res){
 
-        redirect();
+    $res = mysqli_query($conn, $sql);
+    if ($res) {
+        $_SESSION['message'] = "Assigned successfully";
+        $_SESSION['message_type'] = "success";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
-    echo mysqli_error($conn);
-}else{
-    
 }
+
+$_SESSION['message'] = "Echec !!";
+$_SESSION['message_type'] = "success";
+header('Location: ' . $_SERVER['HTTP_REFERER']);
+
+mysqli_close($conn);
