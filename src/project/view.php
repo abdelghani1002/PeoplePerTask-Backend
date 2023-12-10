@@ -82,7 +82,7 @@ if (isset($_SESSION['message'])) {
                         <!-- Tags -->
                         <div class="flex flex-wrap">
                             <?php
-                            $sql = "SELECT t.name as name
+                            $sql = "SELECT t.name as name, t.id as id
                                     FROM project_tags pt
                                     INNER JOIN tags t
                                     ON pt.tag_id = t.id
@@ -91,16 +91,22 @@ if (isset($_SESSION['message'])) {
                             if (mysqli_num_rows($res) > 0) {
                                 while ($tag = mysqli_fetch_assoc($res)) :
                             ?>
-                                    <span href="#" class="p-1 m-0.5 h-fit text-xs text-gray-800 bg-slate-300 rounded-sm">
+                                    <span class="p-1 m-0.5 h-fit text-xs text-gray-800 bg-slate-300 rounded-sm">
                                         <?= $tag['name'] ?>
+                                        <form action="../remove.php" method="POST" class="inline">
+                                            <input type="hidden" name="entity" value="tag">
+                                            <button class="p-1 w-fit h-fit bg-slate-400 border border-red-800 hover:bg-red-600 hover:text-gray-200 text-center rounded-full" 
+                                                    name="id" value="<?= $tag['id'] ?>" onclick="return confirmDelete()">x</button>
+                                        </form>
                                     </span>
                                 <?php
                                 endwhile;
                             }
 
                             if (
+                                isset($_SESSION['user']) && (
                                 $_SESSION['user']['id'] === $project['user_id']
-                                || $_SESSION['user']['role'] === 'admin'
+                                || $_SESSION['user']['role'] === 'admin')
                             ) {
                                 ?>
                                 <!-- Add tag form -->
@@ -179,6 +185,11 @@ if (isset($_SESSION['message'])) {
     <script src="../../assets/javascript/jquery.js"></script>
     <script src="../../assets/javascript/script.js"></script>
     <script>
+        function confirmDelete() {
+            var confirmation = confirm(`Are you sure you want to delete it!`);
+            return confirmation;
+        }
+
         $('#add-tag-btn').click(function() {
             $('#add-tag-form').toggleClass("hidden")
         })

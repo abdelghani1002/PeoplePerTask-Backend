@@ -1,6 +1,6 @@
 <?php
 $index_nav = "../";
-$path = "./";
+$path = "../..";
 ?>
 
 <!doctype html>

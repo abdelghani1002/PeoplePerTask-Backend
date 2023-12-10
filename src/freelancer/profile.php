@@ -142,17 +142,22 @@ if (isset($_SESSION['message'])) {
                             <h2 class="font-bold">Skills</h2>
                             <div class="flex flex-wrap">
                                 <?php
-                                $sql = "SELECT s.name as name
-                                            FROM freelancer_skills fs
-                                            INNER JOIN skills s
-                                            ON fs.skill_id = s.id
-                                            WHERE fs.freelancer_id = " . $freelancer['id'];
+                                $sql = "SELECT s.name as name, s.id as id
+                                        FROM freelancer_skills fs
+                                        INNER JOIN skills s
+                                        ON fs.skill_id = s.id
+                                        WHERE fs.freelancer_id = " . $freelancer['id'];
                                 $res = mysqli_query($conn, $sql);
                                 if (mysqli_num_rows($res) > 0) {
                                     while ($skill = mysqli_fetch_assoc($res)) :
                                 ?>
-                                        <span href="#" class="px-1.5 py-1 m-0.5 h-fit text-gray-700 bg-gray-200 rounded-sm">
+                                        <span class="px-1.5 py-1 m-0.5 h-fit text-gray-700 bg-gray-200 rounded-sm">
                                             <?= $skill['name'] ?>
+                                            <form action="../remove.php" method="POST" class="inline">
+                                                <input type="hidden" name="entity" value="skill">
+                                                <button class="px-1.5 w-fit h-fit bg-slate-400 border border-red-800 hover:bg-red-600 hover:text-gray-200 text-center rounded-full" 
+                                                        name="id" value="<?= $skill['id'] ?>" onclick="return confirmDelete()">x</button>
+                                            </form>
                                         </span>
                                     <?php
                                     endwhile;
@@ -173,7 +178,8 @@ if (isset($_SESSION['message'])) {
                             <!-- Alert request message  -->
                             <?php if (isset($message)) : ?>
                                 <div class="p-1 text-sm text-center rounded-lg" role="alert">
-                                    <span class="font-medium <?php if($message_type == 'success') echo($success_class); else echo($error_class); ?>">
+                                    <span class="font-medium <?php if ($message_type == 'success') echo ($success_class);
+                                                                else echo ($error_class); ?>">
                                         <?= $message ?>
                                     </span>
                                 </div>
