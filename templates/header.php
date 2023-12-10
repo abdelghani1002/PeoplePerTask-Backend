@@ -43,7 +43,7 @@ if (isset($_SESSION['user'])) {
                 </li>
 
                 <li class="nav-contact text-gray-600 dark:text-gray-300 border-t-2 lg:border-0 lg:pt-0 pt-4">
-                    <a href="<?= $path . '/src/contact.php' ?>">Contact Us</a>
+                    <a href="<?= $path . '/src/contact/contact.php' ?>">Contact Us</a>
                 </li>
 
                 <li class="nav-search text-gray-600 dark:text-gray-300 border-y-2 lg:border-0 lg:pt-0 pt-4 lg:pb-0">
