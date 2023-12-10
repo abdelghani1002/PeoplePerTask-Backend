@@ -60,8 +60,8 @@ if (isset($_SESSION['message'])) {
             </div>
 
             <div class="flex flex-1 flex-row justify-between">
-                <div class="w-full flex flex-col justify-between sm:p-6 border-r">
-                    <div>
+                <div class="w-full flex flex-col justify-between px-6 border-r">
+                    <div class="mb-4 border-b">
                         <div class="flex flex-row justify-between">
                             <h2 class="font-bold uppercase text-gray-900 dark:text-gray-200">
                                 <?= $project['title'] ?>
@@ -78,6 +78,55 @@ if (isset($_SESSION['message'])) {
                         <p class="my-5 line-clamp-3 text-sm text-gray-700 dark:text-gray-200">
                             <?= $project['description'] ?>
                         </p>
+
+                        <!-- Tags -->
+                        <div class="flex flex-wrap">
+                            <?php
+                            $sql = "SELECT t.name as name
+                                    FROM project_tags pt
+                                    INNER JOIN tags t
+                                    ON pt.tag_id = t.id
+                                    WHERE pt.project_id = " . $project['id'];
+                            $res = mysqli_query($conn, $sql);
+                            if (mysqli_num_rows($res) > 0) {
+                                while ($tag = mysqli_fetch_assoc($res)) :
+                            ?>
+                                    <span href="#" class="p-1 m-0.5 h-fit text-xs text-gray-800 bg-slate-300 rounded-sm">
+                                        <?= $tag['name'] ?>
+                                    </span>
+                                <?php
+                                endwhile;
+                            }
+
+                            if (
+                                $_SESSION['user']['id'] === $project['user_id']
+                                || $_SESSION['user']['role'] === 'admin'
+                            ) {
+                                ?>
+                                <!-- Add tag form -->
+                                <form id="add-tag-form" action="./add_tag.php" method="POST" class="hidden my-auto">
+                                    <input class="p-1 mx-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md"
+                                            type="text" name="tag_name" id="tag_name">
+                                    <input type="hidden" name="project_id" id="project_id" value="<?= $project['id'] ?>">
+                                </form>
+                                <button id="add-tag-btn" class="p-2 m-0.5 text-bold text-gray-100 bg-cyan-600 rounded-md">
+                                    + Add tag
+                                </button>
+                            <?php
+                            }
+                            ?>
+                        </div>
+
+                        <!-- Alert request message  -->
+                        <?php if (isset($message)) : ?>
+                            <div class="p-1 text-sm text-center rounded-lg" role="alert">
+                                <span class="font-medium <?php if ($message_type == 'success') echo ($success_class);
+                                                            else echo ($error_class); ?>">
+                                    <?= $message ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+
                     </div>
                     <small class="dark:text-gray-300">Posted by</small>
                     <div class="flex flex-row justify-between items-center">
@@ -104,7 +153,8 @@ if (isset($_SESSION['message'])) {
                         <!-- Alert request message  -->
                         <?php if (isset($message)) : ?>
                             <div class="my-1 text-sm text-center rounded-lg" role="alert">
-                                <span class="font-sm p-1 w-fit rounded-md <?php if ($message_type === 'success')  echo($success_class); else echo($error_class); ?>"><?= $message ?></span>
+                                <span class="font-sm p-1 w-fit rounded-md <?php if ($message_type === 'success')  echo ($success_class);
+                                                                            else echo ($error_class); ?>"><?= $message ?></span>
                             </div>
                         <?php endif; ?>
 
@@ -128,6 +178,11 @@ if (isset($_SESSION['message'])) {
 
     <script src="../../assets/javascript/jquery.js"></script>
     <script src="../../assets/javascript/script.js"></script>
+    <script>
+        $('#add-tag-btn').click(function() {
+            $('#add-tag-form').toggleClass("hidden")
+        })
+    </script>
 </body>
 
 </html>
