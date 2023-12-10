@@ -21,6 +21,15 @@ $sql2 = "SELECT cities.name as city, cities.region_id, regions.name as region
         ";
 $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
 
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $message_type = $_SESSION['message_type'];
+    unset($_SESSION['message']);
+    unset($_SESSION['message_type']);
+    $success_class = "text-green-700";
+    $error_class = "text-red-700";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +43,11 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
     <link rel="icon" type="image/x-icon" href="../../assets/images/favicon.png" />
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <style>
+        .d-none {
+            display: none !important;
+        }
+    </style>
     <title>Profile</title>
 </head>
 
@@ -52,14 +66,21 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                 </svg>
             </div>
         </section>
-        <section class="relative py-16 bg-blueGray-200 bg-green-300">
+        <section class="relative py-16 bg-blueGray-200 bg-green-300 dark:bg-slate-600">
             <div class="container mx-auto px-4">
                 <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-96">
                     <div class="px-6">
                         <div class="flex flex-wrap justify-center">
-                            <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                            <div class="w-full lg:w-3/12 px-4 lg:order-2 flex flex-col items-center justify-center">
                                 <div class="">
                                     <img alt="..." src="<?= $path . $freelancer['photo_src'] ?>" class="shadow-xl rounded-full h-auto align-middle border-none -mt-20 max-w-150-px">
+                                </div>
+                                <h3 class="text-4xl font-semibold leading-normal text-blueGray-700">
+                                    <?= $freelancer['username'] ?>
+                                </h3>
+                                <div class="text-sm leading-normal text-blueGray-400">
+                                    <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
+                                    <?= $location['city'] . ", " . $location['region'] ?>
                                 </div>
                             </div>
                             <?php if (isset($_SESSION['user'])) {
@@ -116,26 +137,113 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <h3 class="text-4xl font-semibold leading-normal text-blueGray-700">
-                                <?= $freelancer['username'] ?>
-                            </h3>
-                            <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                                <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                                <?= $location['city'] . ", " . $location['region'] ?>
+
+                        <div class="p-4">
+                            <h2 class="font-bold">Skills</h2>
+                            <div class="flex flex-wrap">
+                                <?php
+                                $sql = "SELECT s.name as name
+                                            FROM freelancer_skills fs
+                                            INNER JOIN skills s
+                                            ON fs.skill_id = s.id
+                                            WHERE fs.freelancer_id = " . $freelancer['id'];
+                                $res = mysqli_query($conn, $sql);
+                                if (mysqli_num_rows($res) > 0) {
+                                    while ($skill = mysqli_fetch_assoc($res)) :
+                                ?>
+                                        <span href="#" class="px-1.5 py-1 m-0.5 h-fit text-gray-700 bg-gray-200 rounded-sm">
+                                            <?= $skill['name'] ?>
+                                        </span>
+                                    <?php
+                                    endwhile;
+                                }
+
+                                if (
+                                    $_SESSION['user']['id'] === $freelancer['id']
+                                    || $_SESSION['user']['role'] === 'admin'
+                                ) {
+                                    ?>
+                                    <button id="add-skill-btn" class="p-2 m-0.5 text-bold text-gray-100 bg-cyan-600 rounded-md">
+                                        + Add skill
+                                    </button>
+                                <?php
+                                }
+                                ?>
                             </div>
-                        </div>
+                            <!-- Alert request message  -->
+                            <?php if (isset($message)) : ?>
+                                <div class="p-1 text-sm text-center rounded-lg" role="alert">
+                                    <span class="font-medium <?php if($message_type == 'success') echo($success_class); else echo($error_class); ?>">
+                                        <?= $message ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <!-- Add skill form -->
+                            <div id="add-skill-form" class="hidden w-1/3 m-auto h-100 mt-10">
+                                <form class="text-gray-900 border bg-gray-400 py-2 rounded-xl flex flex-col flex-grow w-100" action="./add_skill.php" method="POST">
+                                    <select class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md text-gray-600" name="skill_id" id="skill">
+                                        <option class="hidden" value="" selected>Select Skill</option>
+
+                                        <?php
+                                        $sql = "SELECT 
+                                                    c.id AS category_id,
+                                                    c.name AS category_name
+                                                FROM subcategories c
+                                                JOIN skills s 
+                                                    ON c.id = s.subcategory_id
+                                                WHERE s.id NOT IN (
+                                                    SELECT skill_id
+                                                    FROM freelancer_skills
+                                                    WHERE freelancer_id = " . $freelancer['id']
+                                            . ')';
+
+                                        $categories = mysqli_query($conn, $sql);
+                                        if (mysqli_num_rows($categories) > 0) :
+                                            while ($row = mysqli_fetch_assoc($categories)) :
+                                                $category_id = $row['category_id'];
+                                                $category_name = $row['category_name'];
+                                        ?>
+                                                <optgroup label="<?= $category_name ?>">
+                                                    <?php
+                                                    $sql = "SELECT 
+                                                                s.id as skill_id,
+                                                                s.name as skill_name
+                                                            FROM skills s
+                                                            WHERE s.subcategory_id = $category_id
+                                                            AND
+                                                                s.id not in (
+                                                                    SELECT skill_id FROM freelancer_skills fs
+                                                                    WHERE freelancer_id =" . $freelancer['id']
+                                                        . ")";
+                                                    $skills = mysqli_query($conn, $sql);
+
+                                                    while ($skill = mysqli_fetch_assoc($skills)) :
+                                                        $skill_id = $skill['skill_id'];
+                                                        $skill_name = $skill['skill_name'];
+                                                    ?>
+                                                        <option class="bg-gray-200 text-gray-800" value="<?= $skill_id ?>">
+                                                            <?= $skill_name ?>
+                                                        </option>
+                                                    <?php
+                                                    endwhile;
+                                                    ?>
+                                                </optgroup>
+                                        <?php
+                                            endwhile;
+                                        endif;
+                                        ?>
+
+                                    </select>
+                                    <input type="hidden" name="freelancer_id" id="freelancer_id" value="<?= $id ?>">
+                                    <input class="text-white py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" value="Add Skill">
+                                </form>
+                            </div>
 
 
-                        <!-- Freelancer assigned projects  -->
-                        <h2 class="font-bold text-xl">My Assigned projects</h2>
-                        <?php if (
-                            isset($_SESSION['user'])
-                            && $_SESSION['user']['role'] == 'freelancer'
-                            && isset($_GET['id'])
-                        ) : ?>
-                            <div class="py-10 border-t border-blueGray-200 text-center">
-                                <div class="flex flex-wrap justify-center">
+                            <!-- Freelancer assigned projects  -->
+                            <div class="py-10 border-t border-blueGray-200 ">
+                                <h2 class="font-bold text-xl py-1">My Assigned projects</h2>
+                                <div class="flex flex-wrap justify-center text-center">
                                     <table class="table-auto w-full text-sm whitespace-no-wrap border-spacing-2">
                                         <thead>
                                             <tr class="bg-gray-400">
@@ -162,8 +270,7 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                                                     ON s.id = p.subcategory_id
                                                     INNER JOIN users u
                                                     ON p.`user_id` = u.`id`
-                                                    WHERE p.`hired_freelancer_id` = " . $freelancer['id']
-                                                    ;
+                                                    WHERE p.`hired_freelancer_id` = " . $freelancer['id'];
                                             $res = mysqli_query($conn, $query);
                                             if (mysqli_num_rows($res)) :
                                                 while ($row = mysqli_fetch_assoc($res)) :
@@ -198,18 +305,13 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                                     </table>
                                 </div>
                             </div>
-                        <?php endif; ?>
 
 
-                        <!-- Projects with No assigned freelancer -->
-                        <h2 class="font-bold text-xl">Projects with no hired freelancer</h2>
-                        <?php if (
-                            isset($_SESSION['user'])
-                            && $_SESSION['user']['role'] == 'freelancer'
-                            && isset($_GET['id'])
-                        ) : ?>
-                            <div class="py-10 border-t border-blueGray-200 text-center">
-                                <div class="flex flex-wrap justify-center">
+                            <!-- Projects with No assigned freelancer -->
+
+                            <div class="py-10 border-t border-blueGray-200">
+                                <h2 class="font-bold text-xl py-1">Projects with no hired freelancer</h2>
+                                <div class="flex flex-wrap justify-center text-center">
                                     <table class="table-auto w-full text-sm whitespace-no-wrap border-spacing-2">
                                         <thead>
                                             <tr class="bg-gray-400">
@@ -273,22 +375,25 @@ $location = mysqli_fetch_assoc(mysqli_query($conn, $sql2));
                                     </table>
                                 </div>
                             </div>
-                        <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
         </section>
     </main>
+
+    <script src="../../assets/javascript/jquery.js"></script>
+    <script src="../../assets/javascript/script.js"></script>
 
     <script>
         function confirmDelete() {
             var confirmation = confirm(`Are you sure you want to delete it!`);
             return confirmation;
         }
-    </script>
 
-    <script src="../../assets/javascript/jquery.js"></script>
-    <script src="../../assets/javascript/script.js"></script>
+        $('#add-skill-btn').click(function() {
+            $('#add-skill-form').toggleClass("hidden")
+        })
+    </script>
 </body>
 
 </html>
