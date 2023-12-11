@@ -24,14 +24,26 @@ function get_top_categories()
 function get_top_freelancers()
 {
     global $conn;
-    $sql = "SELECT users.*, COUNT(users.id) AS project_count
+    $sql = "SELECT users.*, COUNT(users.id) AS project_count, cities.name as city
             FROM users
             LEFT JOIN projects ON users.id = projects.subcategory_id
-                                and users.role = 'freelancer' 
+            LEFT JOIN cities ON cities.id = users.city_id
+            WHERE users.role = 'freelancer' 
             GROUP BY users.id
             ORDER BY project_count DESC
             LIMIT 10
             ;";
+    $res = mysqli_query($conn, $sql);
+    return $res;
+}
+
+function get_freelancer_skills($id) {
+    global $conn;
+    $sql = "SELECT s.*
+            FROM users u
+            INNER JOIN freelancer_skills fs ON u.id = fs.freelancer_id
+            INNER JOIN skills s ON fs.skill_id = s.id
+            WHERE u.id = $id";
     $res = mysqli_query($conn, $sql);
     return $res;
 }

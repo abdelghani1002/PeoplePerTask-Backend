@@ -571,6 +571,30 @@ let offersInfos = [
         dileveredDays: 5
     },
 ]
+let offersCards = document.querySelectorAll(".offers-section .offer-card");
+
+let makeOffersCards = (infos) => {
+    let i = 0;
+    offersCards.forEach(card => {
+        card.querySelector(".title").textContent = infos[i].title;
+        card.querySelector(".photo").style.backgroundImage = `url("${infos[i].imgURL}")`;
+        infos[i].specialities.forEach(speciality => {
+            let link = document.createElement('a');
+            link.setAttribute("class", "px-1.5 py-1 m-0.5 text-sm bg-gray-100 rounded-md");
+            link.setAttribute('href', "#");
+            link.textContent = speciality;
+            card.querySelector('.specialities').insertBefore(link, card.querySelector(".specialities").firstChild);
+        })
+        card.querySelector(".freelancer-photo").setAttribute("src", infos[i].freelancerPhoto);
+        card.querySelector(".freelancer-name").textContent = infos[i].freelancerName;
+        card.querySelector(".rating").textContent = infos[i].rating;
+        card.querySelector(".reviews").textContent = infos[i].reviews;
+        card.querySelector(".price").textContent = `$${infos[i].price}`;
+        card.querySelector(".dilevered-days").textContent = `dilevered in ${infos[i].dileveredDays} days`;
+        i++;
+    })
+}
+makeOffersCards(offersInfos);
 
 $(document).ready(() => {
     // Categories section
@@ -600,6 +624,7 @@ $(document).ready(() => {
             $(".categories-section .carousal ul").scrollLeft() <= 5 ? $(".categories-btns .scroll-right").prop("disabled", true) : $(".categories-btns .scroll-left").prop("disabled", false)
         });
     });
+
 
     // Freelancers section
     var maxHeight = 0;
@@ -669,6 +694,6 @@ var swiper = new Swiper(".mySwiper", {
     spaceBetween: 40,
     centeredSlides: true,
     autoplay: {
-      delay: 3000,
+        delay: 3000,
     }
 })
