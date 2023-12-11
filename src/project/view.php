@@ -48,6 +48,11 @@ if (isset($_SESSION['message'])) {
     <link rel="stylesheet" href="../../assets/css/input.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Project-view</title>
+    <style>
+        .dark .description * {
+            color: white;
+        }
+    </style>
 </head>
 
 <body class="dark:bg-slate-700">
@@ -75,7 +80,7 @@ if (isset($_SESSION['message'])) {
                             </div>
                         </div>
 
-                        <p class="my-5 line-clamp-3 text-sm text-gray-700 dark:text-gray-200">
+                        <p class="description my-5 line-clamp-3 text-sm text-gray-700 dark:text-gray-100">
                             <?= $project['description'] ?>
                         </p>
 
@@ -93,11 +98,20 @@ if (isset($_SESSION['message'])) {
                             ?>
                                     <span class="p-1 m-0.5 h-fit text-xs text-gray-800 bg-slate-300 rounded-sm">
                                         <?= $tag['name'] ?>
-                                        <form action="../remove.php" method="POST" class="inline">
-                                            <input type="hidden" name="entity" value="tag">
-                                            <button class="p-1 w-fit h-fit bg-slate-400 border border-red-800 hover:bg-red-600 hover:text-gray-200 text-center rounded-full" 
-                                                    name="id" value="<?= $tag['id'] ?>" onclick="return confirmDelete()">x</button>
-                                        </form>
+                                        <?php
+                                        if (
+                                            isset($_SESSION['user']) &&
+                                            ( $_SESSION['user']['role'] === 'admin'
+                                            || $_SESSION['user']['id'] === $project['user_id'])
+                                        ) {
+                                        ?>
+                                            <form action="../remove.php" method="POST" class="inline">
+                                                <input type="hidden" name="entity" value="tag">
+                                                <button class="p-1 w-fit h-fit bg-slate-400 border border-red-800 hover:bg-red-600 hover:text-gray-200 text-center rounded-full" name="id" value="<?= $tag['id'] ?>" onclick="return confirmDelete()">x</button>
+                                            </form>
+                                        <?php
+                                        }
+                                        ?>
                                     </span>
                                 <?php
                                 endwhile;
@@ -105,14 +119,13 @@ if (isset($_SESSION['message'])) {
 
                             if (
                                 isset($_SESSION['user']) && (
-                                $_SESSION['user']['id'] === $project['user_id']
-                                || $_SESSION['user']['role'] === 'admin')
+                                    $_SESSION['user']['id'] === $project['user_id']
+                                    || $_SESSION['user']['role'] === 'admin')
                             ) {
                                 ?>
                                 <!-- Add tag form -->
                                 <form id="add-tag-form" action="./add_tag.php" method="POST" class="hidden my-auto">
-                                    <input class="p-1 mx-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md"
-                                            type="text" name="tag_name" id="tag_name">
+                                    <input class="p-1 mx-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md" type="text" name="tag_name" id="tag_name">
                                     <input type="hidden" name="project_id" id="project_id" value="<?= $project['id'] ?>">
                                 </form>
                                 <button id="add-tag-btn" class="p-2 m-0.5 text-bold text-gray-100 bg-cyan-600 rounded-md">

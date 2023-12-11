@@ -110,17 +110,17 @@ if (isset($_SESSION['message'])) {
                                         </form>
                                     </div>
                                 <?php
-                                }
-                            } else {
+                                } else {
                                 ?>
-                                <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                                    <div class="py-6 px-3 mt-32 sm:mt-0">
-                                        <a class="bg-cyan-500 active:bg-cyan-600 cursor-pointer uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
-                                            Connect
-                                        </a>
+                                    <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+                                        <div class="py-6 px-3 mt-32 sm:mt-0">
+                                            <a class="bg-cyan-500 active:bg-cyan-600 cursor-pointer uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
+                                                Connect
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
                             <?php
+                                }
                             }
                             ?>
                             <div class="w-full lg:w-4/12 px-4 lg:order-1">
@@ -153,19 +153,29 @@ if (isset($_SESSION['message'])) {
                                 ?>
                                         <span class="px-1.5 py-1 m-0.5 h-fit text-gray-700 bg-gray-200 rounded-sm">
                                             <?= $skill['name'] ?>
-                                            <form action="../remove.php" method="POST" class="inline">
-                                                <input type="hidden" name="entity" value="skill">
-                                                <button class="px-1.5 w-fit h-fit bg-slate-400 border border-red-800 hover:bg-red-600 hover:text-gray-200 text-center rounded-full" 
-                                                        name="id" value="<?= $skill['id'] ?>" onclick="return confirmDelete()">x</button>
-                                            </form>
+                                            <?php
+                                            if (
+                                                isset($_SESSION['user']) &&
+                                                ($_SESSION['user']['role'] === 'admin'
+                                                    || $_SESSION['user']['id'] === $freelancer['id'])
+                                            ) {
+                                            ?>
+                                                <form action="../remove.php" method="POST" class="inline">
+                                                    <input type="hidden" name="entity" value="skill">
+                                                    <button class="px-1.5 w-fit h-fit bg-slate-400 border border-red-800 hover:bg-red-600 hover:text-gray-200 text-center rounded-full" name="id" value="<?= $skill['id'] ?>" onclick="return confirmDelete()">x</button>
+                                                </form>
+                                            <?php
+                                            }
+                                            ?>
                                         </span>
                                     <?php
                                     endwhile;
                                 }
 
                                 if (
-                                    $_SESSION['user']['id'] === $freelancer['id']
-                                    || $_SESSION['user']['role'] === 'admin'
+                                    isset($_SESSION['user']) &&
+                                    ($_SESSION['user']['role'] === 'admin'
+                                    || $_SESSION['user']['id'] === $freelancer['id'])
                                 ) {
                                     ?>
                                     <button id="add-skill-btn" class="p-2 m-0.5 text-bold text-gray-100 bg-cyan-600 rounded-md">

@@ -62,7 +62,6 @@ if (isset($_POST)) {
     $user_id = isset($_POST['user_id']) && $_POST['user_id'] != "" ? $_POST['user_id'] : $_SESSION['user']['id'];
     if (
         is_valid("title", $title)
-        && is_valid("description", $description)
         && is_valid("price", $price)
         && is_valid("deadline", $deadline_str)
         && is_valid("subcategory", $subcategory)

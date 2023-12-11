@@ -33,12 +33,17 @@ if (isset($_SESSION['message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/dist/output.css">
     <link rel="stylesheet" href="../../assets/css/input.css">
+
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/qwokz1nmmty2escna2o9lclbv8en7rr1g4j0a0kz0h74kjso/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
     <title>Project-Create</title>
 </head>
 
 <body class="bg-gray-100 h-100 flex flex-col">
+
     <div class="absolute p-5">
-        <a href="<?=$_SERVER['HTTP_REFERER']?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
+        <a href="<?= $_SERVER['HTTP_REFERER'] ?>" class="p-3 bg-zinc-400 text-emerald-200  rounded-xl">
             <- Back </a>
     </div>
 
@@ -49,17 +54,37 @@ if (isset($_SESSION['message'])) {
                 <span class="font-medium <?php $message_type == 'success' ? $success_class : $error_class ?>"><?= $message ?></span>
             </div>
         <?php endif; ?>
-        <form class="text-gray-900 border bg-gray-400 py-2 rounded-xl flex flex-col flex-grow w-100" action="./create.php" method="POST">
+        <form class="text-gray-900 border bg-gray-400 p-2 rounded-xl flex flex-col flex-grow w-100" action="./create.php" method="POST">
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md" type="text" name="title" id="title" placeholder="Title" required>
+            <input class="py-2 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md" type="text" name="title" id="title" placeholder="Title" required>
 
-            <textarea class="py-2 px-1 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md focus:outline-none" name="description" id="description" placeholder="Description" required></textarea>
+            <script>
+                tinymce.init({
+                    selector: 'textarea',
+                    plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                    tinycomments_mode: 'embedded',
+                    tinycomments_author: 'Author name',
+                    mergetags_list: [{
+                            value: 'First.Name',
+                            title: 'First Name'
+                        },
+                        {
+                            value: 'Email',
+                            title: 'Email'
+                        },
+                    ],
+                    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                });
+            </script>
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md" type="text" name="price" id="price" placeholder="Price" required>
+            <textarea name="description" id="description" placeholder="Description"></textarea>
 
-            <input class="py-2 px-1 m-3 w-100 bg-gray-200 text-gray-600 rounded-md" type="datetime-local" name="deadline" id="deadline" placeholder="Deadline" required>
+            <input class="py-2 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md" type="text" name="price" id="price" placeholder="Price" required>
 
-            <select class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md text-gray-600" name="subcategory" id="subcategory" required>
+            <input class="py-2 m-3 w-100 bg-gray-200 text-gray-600 rounded-md" type="datetime-local" name="deadline" id="deadline" placeholder="Deadline" required>
+
+            <select class="py-2 m-3 w-100 bg-gray-200 rounded-md text-gray-600" name="subcategory" id="subcategory" required>
                 <option class="" value="" selected>Select Category</option>
 
                 <?php
@@ -79,7 +104,7 @@ if (isset($_SESSION['message'])) {
                                 $subcategory_id = $subcategory['id'];
                                 $subcategory_name = $subcategory['name'];
                             ?>
-                                <option class="bg-gray-200 text-gray-800" value="<?= $category_id ?>">
+                                <option class="bg-gray-200 text-gray-800" value="<?= $subcategory_id ?>">
                                     <?= $subcategory_name ?>
                                 </option>
                             <?php
@@ -97,7 +122,7 @@ if (isset($_SESSION['message'])) {
             if ($_SESSION['user']['role'] == "admin") {
             ?>
 
-                <select class="py-2 px-1 m-3 w-100 bg-gray-200 rounded-md text-gray-600" name="user_id" id="user_id" required>
+                <select class="py-2 m-3 w-100 bg-gray-200 rounded-md text-gray-600" name="user_id" id="user_id" required>
                     <option class="" value="" selected>Select Client</option>
 
                     <?php
@@ -124,11 +149,13 @@ if (isset($_SESSION['message'])) {
             }
             ?>
 
-            <input class="text-white py-2 px-1 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Add Project">
+            <input class="text-white py-2 mt-3 w-100 bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-md w-2/3 m-auto " type="submit" name="btn" id="btn" value="Add Project">
         </form>
 
     </div>
     <?php mysqli_close($conn); ?>
+
+
 </body>
 
 </html>

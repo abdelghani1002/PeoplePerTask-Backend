@@ -41,6 +41,10 @@ $project = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * from projects where 
     <link rel="stylesheet" href="../../assets/dist/output.css">
     <link rel="stylesheet" href="../../assets/css/input.css">
     <title>Category-Edit</title>
+    
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/qwokz1nmmty2escna2o9lclbv8en7rr1g4j0a0kz0h74kjso/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 </head>
 
 <body class="bg-gray-100 h-100 flex flex-col">
@@ -61,7 +65,28 @@ $project = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * from projects where 
 
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md" type="text" name="title" id="title" placeholder="Title" value="<?= $project['title'] ?>" required>
 
-            <textarea class="py-2 px-1 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md focus:outline-none" name="description" id="description" placeholder="Description" required><?= $project['description'] ?></textarea>
+            
+            <script>
+                tinymce.init({
+                    selector: 'textarea',
+                    plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                    tinycomments_mode: 'embedded',
+                    tinycomments_author: 'Author name',
+                    mergetags_list: [{
+                            value: 'First.Name',
+                            title: 'First Name'
+                        },
+                        {
+                            value: 'Email',
+                            title: 'Email'
+                        },
+                    ],
+                    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                });
+            </script>
+
+            <textarea name="description" id="description" placeholder="Description" required><?= $project['description'] ?></textarea>
 
             <input class="py-2 px-1 m-3 w-100 bg-gray-200 placeholder:text-gray-600 rounded-md" type="text" name="price" id="price" placeholder="Price" value="<?= $project['price'] ?>" required>
 
